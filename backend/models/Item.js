@@ -10,17 +10,21 @@ const itemSchema = mongoose.Schema(
     size: {
       regular: {
         type: Number,
-        default: 0
+        default: 0,
       },
       medium: {
         type: Number,
-        default: 0
+        default: 0,
       },
       large: {
         type: Number,
-        default: 0
+        default: 0,
       },
-  },
+    },
+    image: {
+      type: Object,
+      default: {},
+    },
     itemCreator: {
       type: ObjectId,
       ref: "User",
@@ -33,8 +37,8 @@ const itemSchema = mongoose.Schema(
     },
     itemAvailable: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   { timestamps: true }
 );

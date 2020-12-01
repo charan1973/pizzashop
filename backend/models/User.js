@@ -13,7 +13,7 @@ const userSchema = mongoose.Schema(
     email: {
       type: String,
       required: true,
-      unique: true
+      unique: true,
     },
     password: {
       type: String,
@@ -21,11 +21,14 @@ const userSchema = mongoose.Schema(
     },
     address: [
       {
-        buildingNumber: String,
-        streetName: String,
-        city: String,
-        zipcode: String,
-        phoneNumber: Number,
+        address: {
+          buildingNumber: String,
+          streetName: String,
+          area: String,
+          city: String,
+          zipcode: Number,
+          phoneNumber: Number,
+        },
       },
     ],
     role: {

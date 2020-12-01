@@ -1,21 +1,6 @@
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema;
 
-const orderContentSchema = mongoose.Schema({
-  orderItem: {
-    type: ObjectId,
-    ref: "Item",
-  },
-  addOn: [
-    {
-      addOnItem: {
-        type: ObjectId,
-        ref: "AddOn",
-      },
-    },
-  ],
-});
-
 const orderSchema = mongoose.Schema(
   {
     customer: {
@@ -24,14 +9,39 @@ const orderSchema = mongoose.Schema(
       required: true,
     },
     address: {
-      type: ObjectId,
-      ref: "User.address",
+      type: Object,
       required: true,
     },
-    orderContent: [orderContentSchema],
+    orderContent: [
+      {
+        itemName: String,
+        itemSize: String,
+        itemId: {
+          type: ObjectId,
+          ref: "Item",
+        },
+        itemPrice: Number,
+        addOn: [
+          {
+            addOnName: String,
+            addOnPrice: Number,
+            addOnType: String,
+            addOnId: {
+              type: ObjectId,
+              ref: "AddOn",
+            },
+          },
+        ],
+      },
+    ],
     orderStatus: {
       type: String,
-      enum: ["completed", "delivered", "cancelled", "accepted"],
+      enum: ["completed", "delivered", "cancelled", "accepted", "pending"],
+      default: "pending",
+    },
+    orderPrice: {
+      type: Number,
+      required: true,
     },
   },
   { timestamps: true }
