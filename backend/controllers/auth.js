@@ -8,7 +8,7 @@ const {
 } = require("../validators/authValidator");
 
 exports.signUp = async (req, res) => {
-  const { firstName, lastName, email, password, confirmPassword } = req.body;
+  const { firstName, lastName, email, password } = req.body;
   const { error } = signupValidation(req.body);
 
   if (error) return res.json({ error: error.details[0].message });
@@ -21,9 +21,7 @@ exports.signUp = async (req, res) => {
   const hash = await bcrypt.hashSync(password, salt);
 
   const newUser = new User({
-    firstName,
-    lastName,
-    email,
+    ...req.body,
     password: hash,
   });
   try {
@@ -32,12 +30,13 @@ exports.signUp = async (req, res) => {
       { id: savedUser._id, role: savedUser.role },
       process.env.SECRET
     );
+    res.cookie("token", token, { httpOnly: true });
     return res.json({
-      token,
       user: {
-        name: savedUser.fullName,
-        email: savedUser.email,
-        id: savedUser._id,
+        name: findUser.fullName,
+        email: findUser.email,
+        id: findUser._id,
+        role: findUser.role,
       },
     });
   } catch (err) {
@@ -61,8 +60,19 @@ exports.signIn = async (req, res) => {
     { id: findUser._id, role: findUser.role },
     process.env.SECRET
   );
+
+  res.cookie("token", token, { httpOnly: true });
   return res.json({
-    token,
-    user: { name: findUser.fullName, email: findUser.email, id: findUser._id },
+    user: {
+      name: findUser.fullName,
+      email: findUser.email,
+      id: findUser._id,
+      role: findUser.role,
+    },
   });
+};
+
+exports.signOut = (req, res) => {
+  res.clearCookie("token");
+  return res.json({ message: "Signout successfully" });
 };

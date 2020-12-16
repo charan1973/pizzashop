@@ -27,7 +27,7 @@ exports.createCategory = async (req, res) => {
 };
 
 exports.deleteCategory = async (req, res) => {
-  const { categoryId } = req.body;
+  const { categoryId } = req.params;
 
   const findCategory = await Category.findById(categoryId);
   if (!findCategory)

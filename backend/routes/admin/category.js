@@ -5,7 +5,7 @@ const { verifyToken, isAdmin } = require("../../validators/tokenValidator")
 
 
 router.post("/category/create", verifyToken, isAdmin, createCategory)
-router.delete("/category/delete", verifyToken, isAdmin, deleteCategory)
+router.delete("/category/delete/:categoryId", verifyToken, isAdmin, deleteCategory)
 
 
 

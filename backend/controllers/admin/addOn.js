@@ -1,7 +1,7 @@
 const AddOn = require("../../models/AddOn");
 
 exports.createAddOn = async (req, res) => {
-  const { addOnName, addOnType, addOnPrice } = req.body;
+  const { addOnName, addOnType, addOnPrice, addOnAvailable } = req.body;
 
   if (!addOnName || !addOnType || addOnPrice === "")
     return res.json({ error: "All the fields are required" });
@@ -13,6 +13,7 @@ exports.createAddOn = async (req, res) => {
     addOnName,
     addOnType,
     addOnPrice,
+    addOnAvailable,
     addOnCreator: req.user.id,
   });
 

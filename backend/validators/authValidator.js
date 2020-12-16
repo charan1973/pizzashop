@@ -5,11 +5,7 @@ exports.signupValidation = (data) => {
         firstName: Joi.string().required(),
         lastName: Joi.string().required(),
         email: Joi.string().email().required(),
-        password: Joi.string().required().min(6),
-        confirmPassword: Joi.any().equal(Joi.ref('password'))
-        .required()
-        .label('Confirm password')
-        .messages({ 'any.only': '{{#label}} does not match' })
+        password: Joi.string().required().min(6)
     })
     return schema.validate(data)
 }

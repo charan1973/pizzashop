@@ -43,6 +43,10 @@ const orderSchema = mongoose.Schema(
       type: Number,
       required: true,
     },
+    paymentStatus: {
+      type: Boolean,
+      default: false
+    }
   },
   { timestamps: true }
 );

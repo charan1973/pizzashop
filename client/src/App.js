@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import { Container } from "@chakra-ui/react";
+import { Switch, Route } from "react-router-dom";
+import "./App.css";
+import Navbar from "./components/navbar/Navbar.component";
+import AdminRoute from "./components/private-routes/AdminRoute.component";
+import AdminAddOn from "./pages/admin-addon/AdminAddOn.page";
+import AdminCategory from "./pages/admin-category/AdminCategory.page";
+import AdminHome from "./pages/admin-home/AdminHome.page";
+import AdminItem from "./pages/admin-item/AdminItem.page";
+import Home from "./pages/home/Home.page";
+import SignInAndSignUp from "./pages/signinandsignup/SignInAndSignUp.page";
 
-function App() {
+function App({ match }) {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container maxW="xl">
+      <Navbar />
+      <Switch>
+        {/* Core routes */}
+        <Route exact path="/" component={Home} />
+        <Route exact path="/signin" component={SignInAndSignUp} />
+        {/* Admin Routes */}
+        <AdminRoute exact path="/admin" component={AdminHome} />
+        <AdminRoute exact path="/admin/category" component={AdminCategory} />
+        <AdminRoute exact path="/admin/addon" component={AdminAddOn} />
+        <AdminRoute exact path="/admin/item" component={AdminItem} />
+      </Switch>
+    </Container>
   );
 }
 

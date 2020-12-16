@@ -1,9 +1,13 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser")
+const cors = require("cors")
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser())
+app.use(cors())
 
 mongoose.connect(
   process.env.DB_URL,
@@ -19,6 +23,7 @@ mongoose.connect(
 // Core routes
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user")
+const coreRoutes = require("./routes/core")
 
 // Admin routes
 const adminCategoryRoutes = require("./routes/admin/category");
@@ -29,6 +34,7 @@ const adminOrderRoutes = require("./routes/admin/orderAdmin")
 // Core api calls
 app.use("/api", authRoutes);
 app.use("/api", userRoutes)
+app.use("/api", coreRoutes)
 
 // Admin api calls
 app.use("/api/admin", adminCategoryRoutes);

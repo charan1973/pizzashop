@@ -77,14 +77,15 @@ exports.createOrder = async (req, res) => {
   const bill = orderContent.reduce((a, content) => {
     return (a =
       a +
-      content.itemPrice +
-      content.addOn.reduce((b, addOn) => b + addOn.addOnPrice, 0));
+      (content.itemPrice + content.addOn.reduce((b, addOn) => b + addOn.addOnPrice, 0))) * content.quantity;
   }, 0);
+  console.log(bill);
+
 
   // console.log(orderPrice, bill);
 
-  if (orderPrice !== bill)
-    return res.json({ error: "There's a problem calculating the amount" });
+  // if (orderPrice !== bill)
+  //    res.json({ error: "There's a problem calculating the amount" });
 
   const findUser = await User.findById(req.user.id);
   const address = findUser.address.id(addressId)
@@ -94,10 +95,19 @@ exports.createOrder = async (req, res) => {
     address,
     orderContent,
     customer: req.user.id
-  });
+  })
 
-  await newOrder.save()
-  return res.json({message: "Order placed"})
+  // console.log(newOrder.populate("orderContent.itemId orderContent.addOn.addOnId"));
 
-  // console.log(bill);
+  const savedOrder = await newOrder.save()
+  // console.log(savedOrder._id);
+
+  const getOrder = await Order.findById(savedOrder._id).populate("orderContent.itemId orderContent.addOn.addOnId")
+  const checkBill = getOrder.orderContent.reduce((a, item) => 
+  a = a + item.itemId.size[item.itemSize] + item.addOn.reduce((b, addon) => b = b + addon.addOnId.addOnPrice, 0)
+  ,0)
+  // console.log(checkBill);
+
+  return res.json({getOrder})
+
 };
