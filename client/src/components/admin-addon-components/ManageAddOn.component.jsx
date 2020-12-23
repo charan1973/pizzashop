@@ -1,16 +1,13 @@
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogOverlay,
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
   Box,
   Button,
   Checkbox,
-  Divider,
-  Flex,
   FormControl,
   FormLabel,
   Input,
@@ -27,6 +24,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import DeleteAlert from "../delete-alert/DeleteAlert.component";
 import { deleteAddOnCB, getAllAddOn, updateAddOnCB } from "./addon-helper";
 
 const ManageAddOn = () => {
@@ -80,58 +78,65 @@ const ManageAddOn = () => {
   };
 
   const handleUpdateChange = (e) => {
-    const {name, value} = e.target
-    setUpdateAddOn({...updateAddOn, addOnToUpdate: {...addOnToUpdate, [name]: value}})
-  }
+    const { name, value } = e.target;
+    setUpdateAddOn({
+      ...updateAddOn,
+      addOnToUpdate: { ...addOnToUpdate, [name]: value },
+    });
+  };
 
   const handleUpdateClick = () => {
-    updateAddOnCB(addOnToUpdate.addOnId, {...addOnToUpdate})
-    .then(({data}) => {
-      if(data.message){
-        toast({
-          title: "Addon Update",
-          description: data.message,
-          status: "success"
-        })
-      }else if(data.error){
-        toast({
-          title: "Error",
-          description: data.error,
-          status: "error"
-        })
+    updateAddOnCB(addOnToUpdate.addOnId, { ...addOnToUpdate }).then(
+      ({ data }) => {
+        if (data.message) {
+          toast({
+            title: "Addon Update",
+            description: data.message,
+            status: "success",
+          });
+        } else if (data.error) {
+          toast({
+            title: "Error",
+            description: data.error,
+            status: "error",
+          });
+        }
+        setUpdateAddOn({
+          showUpdateModal: false,
+          addOnToUpdate: {
+            addOnName: "",
+            addOnPrice: "",
+            addOnType: "",
+            addOnAvailable: "",
+          },
+        });
       }
-      setUpdateAddOn({showUpdateModal: false, addOnToUpdate: {addOnName: "", addOnPrice: "", addOnType: "", addOnAvailable: ""}})
-    })
-  }
-
+    );
+  };
 
   return (
     <Box>
       <Text as="h6" textAlign="center" fontWeight="bold" fontSize="25px">
         All AddOn
       </Text>
-      <Box>
+      <Accordion allowToggle>
         {allAddOn.map((addon) => {
           return (
-            <div key={addon._id}>
-              <Flex
-                my="15px"
+            <AccordionItem key={addon._id}>
+              <AccordionButton
                 justifyContent="space-between"
                 alignItems="center"
               >
-                <span>{addon.addOnName}</span>
-                <span>{addon.addOnPrice}</span>
-                <span>{addon.addOnType}</span>
-                <Text
-                  as="span"
-                  color={`${addon.addOnAvailable ? "" : "red.400"}`}
-                >
-                  {addon.addOnAvailable ? "available" : "unavailable"}
-                </Text>
                 <div>
-                  <Button
+                  <AccordionIcon />
+                  <span>{addon.addOnName}</span>
+                </div>
+                <Box d="flex"> 
+                  <Box
                     mx="10px"
                     bg="red.600"
+                    borderRadius="5px" 
+                    p="6px"
                     onClick={() =>
                       setDeleteAddOn({
                         showDeleteAlert: true,
@@ -140,10 +145,12 @@ const ManageAddOn = () => {
                     }
                   >
                     <DeleteIcon />
-                  </Button>
-                  <Button
+                  </Box>
+                  <Box
                     mx="10px"
                     bg="green.400"
+                    p="6px"
+                    borderRadius="5px"
                     onClick={() =>
                       setUpdateAddOn({
                         addOnToUpdate: {
@@ -158,42 +165,32 @@ const ManageAddOn = () => {
                     }
                   >
                     <EditIcon />
-                  </Button>
-                </div>
-              </Flex>
-              <Divider />
-            </div>
+                  </Box>
+                </Box>
+              </AccordionButton>
+              <AccordionPanel color="gray.400">
+                <p>
+                  Addon Price: <b>{addon.addOnPrice}</b>
+                </p>
+                <p>
+                  Addon type: <b>{addon.addOnType}</b>
+                </p>
+                <p>
+                  Addon Available: <b>{addon.addOnAvailable ? "Yes" : "No"}</b>
+                </p>
+              </AccordionPanel>
+            </AccordionItem>
           );
         })}
-      </Box>
+      </Accordion>
 
-      {/* Delete Dialog */}
-      <AlertDialog isOpen={showDeleteAlert}>
-        <AlertDialogOverlay>
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Delete AddOn
-            </AlertDialogHeader>
-
-            <AlertDialogBody>
-              Are you sure? You can't undo this action afterwards.
-            </AlertDialogBody>
-
-            <AlertDialogFooter>
-              <Button
-                onClick={() =>
-                  setDeleteAddOn({ ...deleteAddOn, showDeleteAlert: false })
-                }
-              >
-                Cancel
-              </Button>
-              <Button colorScheme="red" ml={3} onClick={handleDeleteClick}>
-                Delete
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
+      <DeleteAlert
+        showAlert={showDeleteAlert}
+        handleCancelClick={() =>
+          setDeleteAddOn({ ...deleteAddOn, showDeleteAlert: false })
+        }
+        handleDeleteClick={handleDeleteClick}
+      />
 
       {/* Update Modal */}
       <Modal isOpen={updateAddOn.showUpdateModal}>
@@ -220,15 +217,37 @@ const ManageAddOn = () => {
               />
               <RadioGroup mb="10px">
                 <Stack direction="row">
-                  <Radio name="addOnType" value="topping" onChange={handleUpdateChange} isChecked={addOnToUpdate.addOnType === "topping"}>
+                  <Radio
+                    name="addOnType"
+                    value="topping"
+                    onChange={handleUpdateChange}
+                    isChecked={addOnToUpdate.addOnType === "topping"}
+                  >
                     Topping
                   </Radio>
-                  <Radio name="addOnType" value="addon" onChange={handleUpdateChange} isChecked={addOnToUpdate.addOnType === "addon"}>
+                  <Radio
+                    name="addOnType"
+                    value="addon"
+                    onChange={handleUpdateChange}
+                    isChecked={addOnToUpdate.addOnType === "addon"}
+                  >
                     AddOn
                   </Radio>
                 </Stack>
               </RadioGroup>
-              <Checkbox mb="10px" onChange={(e) => setUpdateAddOn({...updateAddOn, addOnToUpdate: {...addOnToUpdate, addOnAvailable: e.target.checked}})} isChecked={addOnToUpdate.addOnAvailable}>
+              <Checkbox
+                mb="10px"
+                onChange={(e) =>
+                  setUpdateAddOn({
+                    ...updateAddOn,
+                    addOnToUpdate: {
+                      ...addOnToUpdate,
+                      addOnAvailable: e.target.checked,
+                    },
+                  })
+                }
+                isChecked={addOnToUpdate.addOnAvailable}
+              >
                 AddOn Available
               </Checkbox>
             </FormControl>

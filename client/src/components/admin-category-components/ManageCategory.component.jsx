@@ -1,11 +1,5 @@
 import { DeleteIcon } from "@chakra-ui/icons";
 import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogOverlay,
   Box,
   Button,
   Divider,
@@ -14,6 +8,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import DeleteAlert from "../delete-alert/DeleteAlert.component";
 import { getAllCategory, deleteCategoryCB } from "./category-helper";
 
 const ManageCategory = () => {
@@ -60,8 +55,8 @@ const ManageCategory = () => {
 
   return (
     <Box>
-      <Text as="h6" textAlign="center" fontWeight="bold" fontSize="25px">
-        All Categories
+      <Text as="h2" textAlign="center" fontWeight="bold" fontSize="25px">
+        Manage Categories
       </Text>
       <Box>
         {allCategory.map((category) => {
@@ -95,26 +90,11 @@ const ManageCategory = () => {
       </Box>
 
       {/* Delete Dialog */}
-      <AlertDialog isOpen={showDeleteAlert} onClose={onDeleteClose}>
-        <AlertDialogOverlay>
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Delete category
-            </AlertDialogHeader>
-
-            <AlertDialogBody>
-              Are you sure? You can't undo this action afterwards.
-            </AlertDialogBody>
-
-            <AlertDialogFooter>
-              <Button onClick={onDeleteClose}>Cancel</Button>
-              <Button colorScheme="red" onClick={handleDeleteClick} ml={3}>
-                Delete
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
+      <DeleteAlert
+        showAlert={showDeleteAlert}
+        handleCancelClick={onDeleteClose}
+        handleDeleteClick={handleDeleteClick}
+      />
     </Box>
   );
 };

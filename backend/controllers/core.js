@@ -20,6 +20,16 @@ exports.getAllItem = async (req, res) => {
     }
 }
 
+exports.getSingleItem = async (req, res) => {
+    const itemId = req.params.itemId
+    try{
+        const item = await Item.findById(itemId).populate("itemCategory")
+        return res.json({item})
+    }catch(err){
+        return res.json({error: "Cannot fulfill the request"})
+    }
+}
+
 exports.getAllAddOn = async (req, res) => {
     try {
         const allAddOn = await AddOn.find({})

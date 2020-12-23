@@ -1,8 +1,21 @@
-const { update } = require("../../models/Item");
 const Item = require("../../models/Item");
+const uploader = require("../../config/cloudinaryConfig")
 
 exports.createItem = async (req, res) => {
   const { itemName, size, itemCategory } = req.body;
+  let image = ""
+
+  if(req.file !== undefined){
+    const { url, secure_url, public_id, asset_id } = await uploader.upload(
+      req.file.path, {folder: "pizza/"}
+    );
+    image = {
+      url,
+      secure_url,
+      public_id,
+      asset_id,
+    };
+  }
 
   if (!itemName || Object.keys(size).length === 0 || !itemCategory)
     return res.json({ error: "All the fields are required" });
@@ -10,6 +23,8 @@ exports.createItem = async (req, res) => {
   const newItem = new Item({
     ...req.body,
     itemCreator: req.user.id,
+    size: JSON.parse(size),
+    image
   });
   try {
     const savedItem = await newItem.save();

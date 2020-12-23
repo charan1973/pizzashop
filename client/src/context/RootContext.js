@@ -1,9 +1,12 @@
+import ItemContextProvider from "./item/ItemContext";
 import UserContextProvider from "./user/UserContext";
 
 const RootContextProvider = ({ children }) => {
   return (
     <UserContextProvider>
-      {children}
+      <ItemContextProvider>
+        {children}
+      </ItemContextProvider>
     </UserContextProvider>
   );
 };

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -9,7 +10,7 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import ImageUploader from 'react-images-upload';
 import { getAllCategory } from "../admin-category-components/category-helper";
 import { createItem } from "./item-helper";
 
@@ -19,12 +20,13 @@ const AddItem = () => {
   const [item, setItem] = useState({
     itemName: "",
     itemCategory: "",
-    itemAvailable: "",
+    itemAvailable: false,
     size: {
       regular: "",
       medium: "",
       large: "",
     },
+    image: []
   });
 
   useEffect(() => {
@@ -35,7 +37,11 @@ const AddItem = () => {
     });
   }, []);
 
-  const { size, itemAvailable, itemCategory, itemName } = item;
+  useEffect(() => {
+    console.log(item);
+  }, [item])
+
+  const { size, itemAvailable, itemCategory, itemName, image } = item;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -47,8 +53,17 @@ const AddItem = () => {
     setItem({ ...item, size: { ...size, [name]: value } });
   };
 
-  const handleSubmit = () => {
-    createItem(item).then(({ data }) => {
+  const handleSubmit = (e) => {
+    e.preventDefault()
+
+    const formData = new FormData()
+    formData.append("itemName", itemName)
+    formData.append("itemAvailable", itemAvailable)
+    formData.append("itemCategory", itemCategory)
+    formData.append("size", JSON.stringify(size))
+    formData.append("image", image[0])
+    
+    createItem(formData).then(({ data }) => {
       if (data.message) {
         toast({
           title: "Add Item",
@@ -67,6 +82,7 @@ const AddItem = () => {
         itemAvailable: "",
         itemCategory: "",
         size: { regular: "", medium: "", large: "" },
+        image: []
       });
     });
   };
@@ -83,7 +99,20 @@ const AddItem = () => {
       <Text as="h4" fontWeight="bold" textAlign="center">
         Add Item
       </Text>
-      <form>
+      <form onSubmit={handleSubmit}>
+      <ImageUploader
+                fileContainerStyle={{backgroundColor: "#2D3748"}}
+                withIcon={false}
+                singleImage={true}
+                withPreview={true}
+                buttonText="Choose item image"
+                label="Max file size: 1mb, accepted: jpg, png"
+                labelStyles={{color: "#fff"}}
+                onChange={(image) => setItem({...item, image})}
+                imgExtension={['.jpg', '.png']}
+                maxFileSize={1048576}
+                name="image"
+            />
         <Input
           my="10px"
           variant="outline"
@@ -146,7 +175,7 @@ const AddItem = () => {
         >
           Item Availability
         </Checkbox>
-        <Button w="100%" onClick={handleSubmit}>
+        <Button w="100%" type="submit">
           ADD
         </Button>
       </form>

@@ -5,14 +5,46 @@ import {
   Flex,
   Divider,
   Box,
-  Image,
-  Heading,
   Text,
   SimpleGrid,
 } from "@chakra-ui/react";
+import { useContext, useEffect, useState } from "react";
+import { getAllCategory } from "../../components/admin-category-components/category-helper";
+import ItemDirectory from "../../components/item-directory/ItemDirectory.component";
+import ItemDrawer from "../../components/item-drawer/ItemDrawer.component";
+import { ItemContext } from "../../context/item/ItemContext";
+import { getAllItems } from "./home-helper";
 
 const Home = () => {
-  const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+  const { item } = useContext(ItemContext);
+  const [itemData, setItemData] = useState({
+    categories: [],
+    items: [],
+  });
+
+  const getData = async () => {
+    await getAllCategory().then(({ data }) => {
+      if (data.category) {
+        setItemData((prevState) => {
+          return { ...prevState, categories: data.category };
+        });
+      }
+    });
+    await getAllItems().then(({ data }) => {
+      if (data.item) {
+        setItemData((prevState) => {
+          return { ...prevState, items: data.item };
+        });
+      }
+    });
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const { items, categories } = itemData;
+
   return (
     <div>
       <Flex w="50%" mx="auto">
@@ -22,61 +54,21 @@ const Home = () => {
         </Button>
       </Flex>
       <div>
-        <div>
-          <h3>VEG</h3>
-          <Divider />
-          <SimpleGrid mt="20px" columns={{ sm: 1, md: 2, lg: 3 }}>
-            {arr.map((arr) => {
-              return (
-                <Box
-                  key={arr}
-                  my="10px"
-                  maxW="sm"
-                  borderWidth="1px"
-                  borderRadius="5px"
-                  overflow="hidden"
-                  boxShadow="2xl"
-                >
-                  <Image
-                    height="250px"
-                    width="100%"
-                    src={
-                      "https://9792366823.myzencommerce.in/userdata/public/gfx/155/new_double_cheese_margherita.jpg"
-                    }
-                    alt="alt"
-                  />
-                  <Box p="6">
-                    <Box display="flex" flexDirection="column" py="10px">
-                      <Heading
-                        as="h5"
-                        fontWeight="bold"
-                        fontSize="20px"
-                        py="20px"
-                      >
-                        Margerita
-                      </Heading>
-                      <Text>Starting @ ₹49</Text>
-                      <Flex justifyContent="space-between">
-                        <Button w="90%" _focus={{ outline: "none" }}>
-                          ADD TO CART
-                        </Button>
-                        <Button
-                          w="90%"
-                          _focus={{ outline: "none" }}
-                          color="white"
-                          bg="blue.400"
-                        >
-                          CUSTOMIZE
-                        </Button>
-                      </Flex>
-                    </Box>
-                  </Box>
-                </Box>
-              );
-            })}
-          </SimpleGrid>
-        </div>
+        {categories.map((category) => {
+          return (
+            <Box key={category._id} mt="30px">
+              <Text as="h3" fontSize="30px">
+                {category.categoryName}
+              </Text>
+              <Divider />
+              <SimpleGrid mt="20px" columns={{ sm: 1, md: 2, lg: 3 }}>
+                <ItemDirectory items={items} filterId={category._id} />
+              </SimpleGrid>
+            </Box>
+          );
+        })}
       </div>
+      {item.showDrawer && <ItemDrawer />}
     </div>
   );
 };
