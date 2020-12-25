@@ -3,14 +3,20 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { BrowserRouter } from "react-router-dom";
 import RootContextProvider from "./context/RootContext";
+
+const config = {
+  useSystemColorMode: false,
+  initialColorMode: "dark",
+}
+const customTheme = extendTheme({ config })
 
 ReactDOM.render(
   <BrowserRouter>
     <RootContextProvider>
-      <ChakraProvider>
+      <ChakraProvider theme={customTheme}>
         <App />
       </ChakraProvider>
     </RootContextProvider>

@@ -9,7 +9,6 @@ const ItemContextProvider = ({children}) => {
         cart: []
     })
 
-
     return (
         <ItemContext.Provider value={{item, itemDispatch}}>
             {children}

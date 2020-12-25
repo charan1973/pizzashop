@@ -14,9 +14,12 @@
     "framer-motion": "^2.9.4",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-fontawesome": "^1.7.1",
     "react-images-upload": "^1.2.8",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
+    "use-state-with-callback": "^2.0.3",
+    "uuid": "^8.3.2",
     "web-vitals": "^0.2.4"
   },
   "scripts": {

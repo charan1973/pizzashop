@@ -11,8 +11,8 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { UserContext } from "../../context/user/UserContext";
-import { LOGIN_USER } from "../../context/user/userTypes";
 import { withRouter } from "react-router-dom";
+import { loginAction } from "../../context/user/user.actions";
 
 const SignInAndSignUp = ({ history }) => {
   const [switchView, setSwitchView] = useState(true);
@@ -42,10 +42,7 @@ const SignInAndSignUp = ({ history }) => {
         const data = response.data;
         if (data.user) {
           setLoading(false);
-          userDispatch({
-            type: LOGIN_USER,
-            user: data.user,
-          });
+          userDispatch(loginAction(data.user))
           toast({
             title: "Sign up",
             description: "You've signed up successfully",
@@ -67,7 +64,7 @@ const SignInAndSignUp = ({ history }) => {
     };
 
     return (
-      <Box h="300px">
+      <Box h="300px" d={`${showLoadingScreen && "none"}`}>
         <form>
           <Text fontWeight="bold" fontSize="30px" as="h3">
             Sign Up
@@ -128,11 +125,7 @@ const SignInAndSignUp = ({ history }) => {
       signIn(cred).then((response) => {
         const data = response.data;
         if (data.user) {
-          // setLoading(false);
-          userDispatch({
-            type: LOGIN_USER,
-            user: data.user,
-          });
+          userDispatch(loginAction(data.user))
           toast({
             title: "Sign In",
             description: "You've signed in successfully",
@@ -154,7 +147,7 @@ const SignInAndSignUp = ({ history }) => {
     };
 
     return (
-      <Box h="300px">
+      <Box h="300px" d={`${showLoadingScreen && "none"}`}>
         <form>
           <Text fontWeight="bold" fontSize="30px" as="h3">
             Sign In
@@ -183,7 +176,7 @@ const SignInAndSignUp = ({ history }) => {
   };
 
   return (
-    <Box w="100%" h="90vh" d="flex" justifyContent="center" alignItems="center">
+    <Box w="100%" h="90vh" d="flex" justifyContent="center" alignItems="center" >
       {showLoadingScreen && 
       <Spinner position="absolute" zIndex="999" size="xl" mx="auto" color="#fff" />
       }
@@ -211,7 +204,7 @@ const SignInAndSignUp = ({ history }) => {
               SIGNUP
             </Button>
           </Flex>
-          <Box w="100%" p="50px">
+          <Box w="100%" p="50px" position="relative">
             {switchView ? <SignInComponent /> : <SignUpComponent />}
           </Box>
         </Box>

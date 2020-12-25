@@ -7,6 +7,7 @@ import AdminAddOn from "./pages/admin-addon/AdminAddOn.page";
 import AdminCategory from "./pages/admin-category/AdminCategory.page";
 import AdminHome from "./pages/admin-home/AdminHome.page";
 import AdminItem from "./pages/admin-item/AdminItem.page";
+import CartPage from "./pages/cart/CartPage.page";
 import Home from "./pages/home/Home.page";
 import SignInAndSignUp from "./pages/signinandsignup/SignInAndSignUp.page";
 
@@ -18,6 +19,7 @@ function App({ match }) {
         {/* Core routes */}
         <Route exact path="/" component={Home} />
         <Route exact path="/signin" component={SignInAndSignUp} />
+        <Route exact path="/cart" component={CartPage} />
         {/* Admin Routes */}
         <AdminRoute exact path="/admin" component={AdminHome} />
         <AdminRoute exact path="/admin/category" component={AdminCategory} />

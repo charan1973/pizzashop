@@ -43,6 +43,7 @@ const Home = () => {
     getData();
   }, []);
 
+
   const { items, categories } = itemData;
 
   return (

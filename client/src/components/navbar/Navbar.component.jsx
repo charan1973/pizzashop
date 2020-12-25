@@ -1,18 +1,25 @@
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
-import { Box, Button, Heading, useColorMode } from "@chakra-ui/react";
+import { Box, Button, Heading, useColorMode, useToast } from "@chakra-ui/react";
 import { useContext } from "react";
+import FontAwesome from "react-fontawesome";
 import { Link } from "react-router-dom";
+import { logoutAction } from "../../context/user/user.actions";
 import { UserContext } from "../../context/user/UserContext";
-import { LOGOUT_USER } from "../../context/user/userTypes";
 import { signOut } from "../../pages/signinandsignup/auth-helper";
 
 const Navbar = () => {
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { colorMode, toggleColorMode } = useColorMode("dark");
   const { user, userDispatch } = useContext(UserContext);
-
+  const toast = useToast()
   const handleLogout = () => {
-    userDispatch({ type: LOGOUT_USER });
+    userDispatch(logoutAction());
     signOut();
+    toast({
+      title: "Sign Out",
+      description: "Signed out complete",
+      status: "success",
+      duration: "2000"
+    })
   };
 
   return (
@@ -41,7 +48,7 @@ const Navbar = () => {
           fontWeight="bold"
         >
           {user.role === 1 && <Link to="/admin">ADMIN</Link>}
-          <Link to="/cart">CART</Link>
+          <Link to="/cart"><FontAwesome name="shopping-cart" size="2x" /> </Link>
           {!user && <Link to="/signin">SIGNIN</Link>}
           {user && <div style={{cursor: "pointer"}} onClick={handleLogout}>SIGNOUT</div>}
         </Box>
