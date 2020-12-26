@@ -4,7 +4,7 @@ import { showCustomizeDrawer } from "../../context/item/item.actions";
 import { ItemContext } from "../../context/item/ItemContext";
 import ItemCard from "../item-card/ItemCard.component";
 
-const ItemDirectory = ({ items, filterId }) => {
+const ItemDirectory = ({ items, filterCategoryId }) => {
     const {itemDispatch} = useContext(ItemContext)
     const history = useHistory()
 
@@ -17,7 +17,7 @@ const ItemDirectory = ({ items, filterId }) => {
   return (
     <>
       {items
-        .filter((item) => item.itemCategory._id === filterId)
+        .filter((item) => item.itemCategory._id === filterCategoryId)
         .map((item) => {
           return (
             <ItemCard key={item._id} item={item} customizeOnClick={() => customizeItem(item._id)}/>

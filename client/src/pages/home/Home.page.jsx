@@ -9,6 +9,7 @@ import {
   SimpleGrid,
 } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
+import { useStateWithCallbackLazy } from "use-state-with-callback";
 import { getAllCategory } from "../../components/admin-category-components/category-helper";
 import ItemDirectory from "../../components/item-directory/ItemDirectory.component";
 import ItemDrawer from "../../components/item-drawer/ItemDrawer.component";
@@ -21,6 +22,11 @@ const Home = () => {
     categories: [],
     items: [],
   });
+
+  const [search, setSearch] = useStateWithCallbackLazy({
+    searchInput: "",
+    filteredSearchItems: []
+  })
 
   const getData = async () => {
     await getAllCategory().then(({ data }) => {
@@ -43,18 +49,27 @@ const Home = () => {
     getData();
   }, []);
 
-
   const { items, categories } = itemData;
+  const {searchInput, filteredSearchItems} = search
+
+  const handleSearchChange = (e) => {
+    const {value} = e.target
+    setSearch({
+      ...search,
+      searchInput: value,
+      filteredSearchItems: items.filter(item => item.itemName.toLowerCase().includes(searchInput.toLowerCase()))
+    })
+  }
 
   return (
-    <div>
+    <Box>
       <Flex w="50%" mx="auto">
-        <Input placeholder="Search Pizzas..." />
+        <Input placeholder="Search Items..." name="searchInput" value={searchInput} onChange={handleSearchChange} />
         <Button>
           <SearchIcon />
         </Button>
       </Flex>
-      <div>
+      <Box>
         {categories.map((category) => {
           return (
             <Box key={category._id} mt="30px">
@@ -63,14 +78,14 @@ const Home = () => {
               </Text>
               <Divider />
               <SimpleGrid mt="20px" columns={{ sm: 1, md: 2, lg: 3 }}>
-                <ItemDirectory items={items} filterId={category._id} />
+                <ItemDirectory items={searchInput ? filteredSearchItems : items} filterCategoryId={category._id} />
               </SimpleGrid>
             </Box>
           );
         })}
-      </div>
+      </Box>
       {item.showDrawer && <ItemDrawer />}
-    </div>
+    </Box>
   );
 };
 
