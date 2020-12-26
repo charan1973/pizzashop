@@ -72,6 +72,13 @@ exports.signIn = async (req, res) => {
   });
 };
 
+exports.getUserRole = (req, res) => {
+  const { role } = req.user;
+  return res.json({
+    role,
+  });
+};
+
 exports.signOut = (req, res) => {
   res.clearCookie("token");
   return res.json({ message: "Signout successfully" });

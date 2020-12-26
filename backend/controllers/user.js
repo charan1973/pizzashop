@@ -72,7 +72,7 @@ exports.deleteAddress = async (req, res) => {
 
 // Order controllers
 exports.createOrder = async (req, res) => {
-  const { orderContent, addressId, orderPrice } = req.body;
+  const { orderContent, addressId } = req.body;
 
   const bill = orderContent.reduce((a, content) => {
     return (a =

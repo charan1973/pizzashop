@@ -75,6 +75,7 @@ const ItemDrawer = () => {
   const { itemData, addOnData, isLoaded } = itemState;
   const { quantity } = cartItem;
 
+  
   const getData = async () => {
     await getItem(query.get("item")).then(({ data }) => {
       setItemState((prevState) => ({
@@ -93,7 +94,7 @@ const ItemDrawer = () => {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const quantityManage = (type) => {
     if (type === "increase") {

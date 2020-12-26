@@ -53,7 +53,8 @@ const CartPage = () => {
       </Box>
     </Box>
   ) : (
-    <Box d="flex" justifyContent="center" alignItems="center">
+    <Box d="flex" flexDirection="column" justifyContent="center">
+      <Text as="h2" fontSize="20px" textAlign="center">CART IS EMPTY</Text>
       <Button as={Link} to="/">ADD TO ITEMS CART</Button>
     </Box>
   );

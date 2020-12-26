@@ -1,4 +1,6 @@
 import React, { createContext, useEffect, useReducer } from 'react';
+import { getUserRoleAction } from './user.actions';
+import { getUserRole } from './user.utils';
 import userReducer from './userReducer';
 
 export const UserContext = createContext()
@@ -12,6 +14,15 @@ const UserContextProvider = ({children}) => {
             return ""
         }
     })
+
+    useEffect(() => {
+        if(user.role === 0 || user.role === 1){
+            getUserRole()
+            .then(({data}) => {
+                userDispatch(getUserRoleAction(data.role))
+            })
+        }
+    }, [user.role])
 
     useEffect(() => {
         localStorage.setItem("user", JSON.stringify(user))

@@ -1,6 +1,6 @@
-import { Box, Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
+import { Box, Button, Heading, Image, Text } from "@chakra-ui/react";
 
-const ItemCard = ({item, customizeOnClick, addToCartOnClick}) => {
+const ItemCard = ({item, customizeOnClick}) => {
     return ( 
         <Box
               key={item._id}
@@ -25,20 +25,16 @@ const ItemCard = ({item, customizeOnClick, addToCartOnClick}) => {
                   <Text>Starting @ ₹{item.size.regular}</Text>
                   {
                     item.itemAvailable ? 
-                  (<Flex>
-                    <Button w="90%" _focus={{ outline: "none" }}>
-                      ADD TO CART
-                    </Button>
+                  (
                     <Button
-                      w="90%"
                       _focus={{ outline: "none" }}
                       color="white"
                       bg="blue.400"
                       onClick={customizeOnClick}
                     >
-                      CUSTOMIZE
+                      ADD TO CART
                     </Button>
-                  </Flex>)
+              )
                   :(
                     <Button isDisabled>Item Unavailable</Button>
                   )

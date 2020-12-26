@@ -1,5 +1,5 @@
-import { MoonIcon, SunIcon } from "@chakra-ui/icons";
-import { Box, Button, Heading, useColorMode, useToast } from "@chakra-ui/react";
+import { ChevronDownIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
+import { Box, Button, Heading, Menu, MenuButton, MenuItem, MenuList, useBreakpointValue, useColorMode, useToast } from "@chakra-ui/react";
 import { useContext } from "react";
 import FontAwesome from "react-fontawesome";
 import { Link } from "react-router-dom";
@@ -9,8 +9,11 @@ import { signOut } from "../../pages/signinandsignup/auth-helper";
 
 const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode("dark");
-  const { user, userDispatch } = useContext(UserContext);
   const toast = useToast()
+  const displayFull = useBreakpointValue({base: "none", md: ""})
+  const displaySmall = useBreakpointValue({base: "", md: "none"})
+
+  const { user, userDispatch } = useContext(UserContext);
   const handleLogout = () => {
     userDispatch(logoutAction());
     signOut();
@@ -47,10 +50,16 @@ const Navbar = () => {
           justifyContent="space-around"
           fontWeight="bold"
         >
-          {user.role === 1 && <Link to="/admin">ADMIN</Link>}
-          <Link to="/cart"><FontAwesome name="shopping-cart" size="2x" /> </Link>
-          {!user && <Link to="/signin">SIGNIN</Link>}
-          {user && <div style={{cursor: "pointer"}} onClick={handleLogout}>SIGNOUT</div>}
+          <Link to="/cart" style={{display: displayFull}}><FontAwesome name="shopping-cart" size="2x" /> </Link>
+          <Menu>
+            <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>Options</MenuButton>
+            <MenuList p="7px">
+              <MenuItem as={Link} to="/cart" style={{display: displaySmall}}>CART</MenuItem>
+              {user && <MenuItem style={{cursor: "pointer"}} onClick={handleLogout}>SIGNOUT</MenuItem>}
+              {!user && <MenuItem as={Link} to="/signin">SIGNIN</MenuItem>}
+            </MenuList>
+          </Menu>
+          {user.role === 1 && <Button as={Link} to="/admin" bg="red.400">ADMIN</Button>}
         </Box>
       </Box>
     </nav>
