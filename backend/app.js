@@ -9,6 +9,8 @@ app.use(express.json());
 app.use(cookieParser())
 app.use(cors())
 
+app.use("/", express.static("../client/build"))
+
 mongoose.connect(
   process.env.DB_URL,
   {
