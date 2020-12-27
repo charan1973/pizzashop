@@ -4,7 +4,7 @@
   "description": "Pizza shop site",
   "scripts": {
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm install --prefix backend && npm run build --prefix client",
-    "start": "npm run build --prefix client && npm start --prefix backend"
+    "start": "npm start --prefix backend"
   },
   "repository": {
     "type": "git",
