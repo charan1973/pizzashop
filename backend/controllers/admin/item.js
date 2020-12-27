@@ -64,6 +64,7 @@ exports.deleteItem = async (req, res) => {
   if (!findItem) return res.json({ error: "No items found on the list" });
 
   try {
+    const deleteImage = await uploader.destroy(findItem.image.public_id)
     const deletedItem = await findItem.remove();
     return res.json({ message: `Item: '${deletedItem.itemName}' deleted` });
   } catch (err) {
