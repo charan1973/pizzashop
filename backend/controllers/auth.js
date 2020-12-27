@@ -72,8 +72,7 @@ exports.signIn = async (req, res) => {
       },
     });
   }catch(err){
-    console.log(err)
-    // return res.json({})
+    return res.json({error: "Error logging in"})
   }
 };
 
