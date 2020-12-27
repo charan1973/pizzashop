@@ -3,13 +3,12 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser")
 const cors = require("cors")
+const path = require("path")
 
 const app = express();
 app.use(express.json());
 app.use(cookieParser())
 app.use(cors())
-
-app.use("/", express.static("../client/build"))
 
 mongoose.connect(
   process.env.DB_URL,
@@ -21,6 +20,9 @@ mongoose.connect(
   },
   () => console.log("DB connected")
 );
+
+
+
 
 // Core routes
 const authRoutes = require("./routes/auth");
@@ -43,6 +45,11 @@ app.use("/api/admin", adminCategoryRoutes);
 app.use("/api/admin", adminItemRoutes);
 app.use("/api/admin", adminAddOnRoutes);
 app.use("/api/admin", adminOrderRoutes)
+
+app.use(express.static("../client/build"))
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve("../client/build/index.html"))
+})
 
 const port = process.env.PORT || 8000;
 app.listen(port, (req, res) => {

@@ -12,6 +12,7 @@ import Home from "./pages/home/Home.page";
 import SignInAndSignUp from "./pages/signinandsignup/SignInAndSignUp.page";
 
 function App({ match }) {
+  
   return (
     <Container maxW="xl">
       <Navbar />
