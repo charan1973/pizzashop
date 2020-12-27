@@ -1,19 +1,27 @@
-import React, { createContext, useReducer } from 'react';
-import itemReducer from './itemReducer';
+import React, { createContext, useEffect, useReducer } from "react";
+import itemReducer from "./itemReducer";
 
-export const ItemContext = createContext()
+export const ItemContext = createContext();
 
-const ItemContextProvider = ({children}) => {
-    const [item, itemDispatch] = useReducer(itemReducer, {
-        showDrawer: false,
-        cart: []
-    })
+const ItemContextProvider = ({ children }) => {
+  const [item, itemDispatch] = useReducer(itemReducer, {}, () => {
+    return {
+      showDrawer: false,
+      cart: JSON.parse(localStorage.getItem("cart"))
+        ? [...JSON.parse(localStorage.getItem("cart"))]
+        : [],
+    };
+  });
 
-    return (
-        <ItemContext.Provider value={{item, itemDispatch}}>
-            {children}
-        </ItemContext.Provider>
-    )
-}
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(item.cart));
+  }, [item.cart]);
 
-export default ItemContextProvider
+  return (
+    <ItemContext.Provider value={{ item, itemDispatch }}>
+      {children}
+    </ItemContext.Provider>
+  );
+};
+
+export default ItemContextProvider;
