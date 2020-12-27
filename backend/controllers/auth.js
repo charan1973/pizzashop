@@ -50,26 +50,31 @@ exports.signIn = async (req, res) => {
 
   if (error) return res.json({ error: error.details[0].message });
 
-  const findUser = await User.findOne({ email });
-  if (!findUser) return res.json({ error: "Email/Password is wrong" });
-
-  const checkPassword = bcrypt.compareSync(password, findUser.password);
-  if (!checkPassword) return res.json({ error: "Email/Password is wrong" });
-
-  const token = await jwt.sign(
-    { id: findUser._id, role: findUser.role },
-    process.env.SECRET
-  );
-
-  res.cookie("token", token, { httpOnly: true });
-  return res.json({
-    user: {
-      name: findUser.fullName,
-      email: findUser.email,
-      id: findUser._id,
-      role: findUser.role,
-    },
-  });
+  try{
+    const findUser = await User.findOne({ email });
+    if (!findUser) return res.json({ error: "Email/Password is wrong" });
+  
+    const checkPassword = bcrypt.compareSync(password, findUser.password);
+    if (!checkPassword) return res.json({ error: "Email/Password is wrong" });
+  
+    const token = await jwt.sign(
+      { id: findUser._id, role: findUser.role },
+      process.env.SECRET
+    );
+  
+    res.cookie("token", token, { httpOnly: true });
+    return res.json({
+      user: {
+        name: findUser.fullName,
+        email: findUser.email,
+        id: findUser._id,
+        role: findUser.role,
+      },
+    });
+  }catch(err){
+    console.log(err)
+    // return res.json({})
+  }
 };
 
 exports.getUserRole = (req, res) => {

@@ -43,6 +43,7 @@ app.use("/api/admin", adminItemRoutes);
 app.use("/api/admin", adminAddOnRoutes);
 app.use("/api/admin", adminOrderRoutes);
 
+// Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
   // Serve frontend files
   app.use(express.static("../client/build"));
