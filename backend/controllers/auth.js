@@ -33,10 +33,10 @@ exports.signUp = async (req, res) => {
     res.cookie("token", token, { httpOnly: true });
     return res.json({
       user: {
-        name: findUser.fullName,
-        email: findUser.email,
-        id: findUser._id,
-        role: findUser.role,
+        name: savedUser.fullName,
+        email: savedUser.email,
+        id: savedUser._id,
+        role: savedUser.role,
       },
     });
   } catch (err) {
