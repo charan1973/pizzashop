@@ -1,0 +1,19 @@
+{
+  "name": "pizza",
+  "version": "1.0.0",
+  "description": "Pizza shop site",
+  "main": "\"\"",
+  "scripts": {
+    "start": "npm run build --prefix client && npm start --prefix backend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/charan1973/pizzashop.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/charan1973/pizzashop/issues"
+  },
+  "homepage": "https://github.com/charan1973/pizzashop#readme"
+}
