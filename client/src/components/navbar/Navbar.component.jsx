@@ -1,8 +1,9 @@
 import { ChevronDownIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
-import { Box, Button, Heading, Menu, MenuButton, MenuItem, MenuList, useBreakpointValue, useColorMode, useToast } from "@chakra-ui/react";
+import { Box, Button, Heading, Image, Menu, MenuButton, MenuItem, MenuList, useBreakpointValue, useColorMode, useToast } from "@chakra-ui/react";
 import { useContext } from "react";
 import FontAwesome from "react-fontawesome";
 import { Link } from "react-router-dom";
+import Logo from "../../assets/logo.png"
 import { logoutAction } from "../../context/user/user.actions";
 import { UserContext } from "../../context/user/UserContext";
 import { signOut } from "../../pages/signinandsignup/auth-helper";
@@ -34,6 +35,8 @@ const Navbar = () => {
         py="20px"
       >
         <Heading as="h3" size="md" fontWeight="bold">
+        <Box d="flex" justifyContent="center" alignItems="center">
+        <Image src={Logo} h="50px" />
           <Link to="/">Pizzetta</Link>
           <Button
             mx="10px"
@@ -42,6 +45,7 @@ const Navbar = () => {
           >
             {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
           </Button>
+        </Box>
         </Heading>
         <Box
           display="flex"
