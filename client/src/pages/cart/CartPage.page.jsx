@@ -1,9 +1,12 @@
+import { useContext } from "react";
+import {  ChevronLeftIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
+  Grid,
+  Select,
   Text,
 } from "@chakra-ui/react";
-import { useContext } from "react";
 import { Link } from "react-router-dom";
 import CartItem from "../../components/cart-item/cart-item.component";
 import { ItemContext } from "../../context/item/ItemContext";
@@ -25,10 +28,12 @@ const CartPage = () => {
   };
 
   return cart.length > 0 ? (
-    <Box mb="60px">
+    <Grid templateColumns="75% 25%" gap={5} mb="60px">
+    <Box>
+    <Button as={Link} to="/" mb="10px"><ChevronLeftIcon />GO BACK HOME</Button>
     <Box id="cart-list">
       {
-        cart.map((item) => <CartItem item={item} />)
+        cart.map((item) => <CartItem key={item.id} item={item} />)
       }
     </Box>
       <Box
@@ -39,7 +44,6 @@ const CartPage = () => {
         w="100%"
         h="50px"
         p="20px"
-        // bg="gray.700"
         d="flex"
         alignItems="center"
         justifyContent="flex-end"
@@ -52,6 +56,16 @@ const CartPage = () => {
         </Box>
       </Box>
     </Box>
+    <Box>
+      <Text as="p" fontWeight="bold">Choose an address:</Text>
+      <Select>
+        <option>Hello</option>
+        <option>Hello</option>
+        <option>Hello</option>
+        <option>Hello</option>
+      </Select>
+    </Box>
+    </Grid>
   ) : (
     <Box d="flex" flexDirection="column" justifyContent="center" alignItems="center" h="500px">
     <Box>

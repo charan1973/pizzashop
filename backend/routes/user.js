@@ -14,7 +14,7 @@ router.get("/user/:userId", verifyToken, getUserProfile);
 // Address Routes
 router.post("/user/address/add", verifyToken, addAddress);
 router.put("/user/address/edit", verifyToken, editAddress);
-router.delete("/user/address/delete", verifyToken, deleteAddress);
+router.delete("/user/address/delete/:addressId", verifyToken, deleteAddress);
 
 //Order Routes
 router.post("/user/order/create", verifyToken, createOrder);

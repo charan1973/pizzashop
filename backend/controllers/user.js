@@ -2,11 +2,13 @@ const Order = require("../models/Order");
 const User = require("../models/User");
 const Item = require("../models/Item");
 
-exports.getUserProfile = (req, res) => {
-  if (req.user.id != req.requestingUser._id)
-    return res.json({ error: "You are not allowed" });
-
-  return res.json({ user: req.requestingUser });
+exports.getUserProfile = async (req, res) => {
+  try{
+    const {address, email, firstName, lastName, fullName, _id} = await User.findById(req.user.id)
+    return res.json({user: {address, email, firstName, lastName, fullName, _id}})
+  }catch(err){
+    return res.json({error: "Error getting user"})
+  }
 };
 
 // Address Controllers
@@ -57,7 +59,7 @@ exports.editAddress = async (req, res) => {
 };
 
 exports.deleteAddress = async (req, res) => {
-  const { addressId } = req.body;
+  const { addressId } = req.params;
   try {
     const findUser = await User.findById(req.user.id);
     if (findUser.address.id(addressId) === null)
