@@ -1,7 +1,7 @@
 import { Button, Flex } from "@chakra-ui/react";
 import { useState } from "react";
-import AddItem from "../../components/admin-item-components/AddItem.component";
-import ManageItem from "../../components/admin-item-components/ManageItem.component";
+import AddItem from "../../components/admin-item/AddItem.component";
+import ManageItem from "../../components/admin-item/ManageItem.component";
 import AdminLayout from "../../components/admin-layout/AdminLayout.component";
 
 const AdminItem = () => {

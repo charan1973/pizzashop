@@ -1,8 +1,8 @@
 import { Button, Flex } from "@chakra-ui/react";
 import { useState } from "react";
-import AddCategory from "../../components/admin-category-components/AddCategory.component";
+import AddCategory from "../../components/admin-category/AddCategory.component";
 import AdminLayout from "../../components/admin-layout/AdminLayout.component";
-import ManageCategory from "../../components/admin-category-components/ManageCategory.component";
+import ManageCategory from "../../components/admin-category/ManageCategory.component";
 
 const AdminCategory = ({ match }) => {
   const [view, setView] = useState(true);

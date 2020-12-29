@@ -11,7 +11,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import ImageUploader from 'react-images-upload';
-import { getAllCategory } from "../admin-category-components/category-helper";
+import { getAllCategory } from "../admin-category/category-helper";
 import { createItem } from "./item-helper";
 
 const AddItem = () => {

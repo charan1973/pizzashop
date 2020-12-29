@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
 import { useStateWithCallbackLazy } from "use-state-with-callback";
-import { getAllCategory } from "../../components/admin-category-components/category-helper";
+import { getAllCategory } from "../../components/admin-category/category-helper";
 import ItemDirectory from "../../components/item-directory/ItemDirectory.component";
 import ItemDrawer from "../../components/item-drawer/ItemDrawer.component";
 import { ItemContext } from "../../context/item/ItemContext";
