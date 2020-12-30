@@ -26,12 +26,13 @@ const orderSchema = mongoose.Schema(
             addOnName: String,
             addOnPrice: Number,
             addOnType: String,
-            addOnId: {
+            _id: {
               type: ObjectId,
               ref: "AddOn",
             },
           },
         ],
+        quantity: Number
       },
     ],
     orderStatus: {
@@ -46,6 +47,10 @@ const orderSchema = mongoose.Schema(
     paymentStatus: {
       type: Boolean,
       default: false
+    },
+    paymentDetails: {
+      type: Object,
+      default: {}
     }
   },
   { timestamps: true }

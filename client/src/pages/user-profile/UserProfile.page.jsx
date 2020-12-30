@@ -23,15 +23,13 @@ import {
   Tr,
   useToast,
 } from "@chakra-ui/react";
-import { useContext, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import AddressPreview from "../../components/address-preview/AddressPreview.component";
-import { UserContext } from "../../context/user/UserContext";
 import { addressWrite, deleteAddress, getUserData } from "./user.helper";
 
 const UserProfile = () => {
   const toast = useToast();
   const [userData, setUserData] = useState({ loaded: false });
-  const { user } = useContext(UserContext);
   const [addressModal, setAddressModal] = useState({
     buildingNumber: "",
     streetName: "",
@@ -60,7 +58,7 @@ const UserProfile = () => {
     });
 
   useEffect(() => {
-    getUserData(user.id).then(({ data }) => {
+    getUserData().then(({ data }) => {
       if (data.user) {
         setUserData({ ...data.user, loaded: true });
       }

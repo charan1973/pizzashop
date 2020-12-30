@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import DeleteAlert from "../delete-alert/DeleteAlert.component";
-import { getAllCategory, deleteCategoryCB } from "./category-helper";
+import { getAllCategory, deleteCategoryCB } from "./category.helper";
 
 const ManageCategory = () => {
   const toast = useToast();

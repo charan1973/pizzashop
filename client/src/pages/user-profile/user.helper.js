@@ -2,7 +2,7 @@ import axios from "axios"
 import {API} from "../../backend"
 
 export const getUserData = (userId) => {
-    return axios.get(`${API}/user/${userId}`)
+    return axios.get(`${API}/user/profile`)
             .catch(err => console.log(err))
 }
 

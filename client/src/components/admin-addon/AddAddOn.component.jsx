@@ -12,7 +12,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { createAddOn } from "./addon-helper";
+import { createAddOn } from "./addon.helper";
 
 const AddAddOn = () => {
   const toast = useToast();

@@ -9,8 +9,8 @@ const {
 
 exports.signUp = async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
-  const { error } = signupValidation(req.body);
 
+  const { error } = signupValidation(req.body);
   if (error) return res.json({ error: error.details[0].message });
 
   const findUser = await User.findOne({ email });
@@ -36,7 +36,7 @@ exports.signUp = async (req, res) => {
         name: savedUser.fullName,
         email: savedUser.email,
         id: savedUser._id,
-        role: savedUser.role,
+        role: savedUser.role
       },
     });
   } catch (err) {
@@ -68,7 +68,7 @@ exports.signIn = async (req, res) => {
         name: findUser.fullName,
         email: findUser.email,
         id: findUser._id,
-        role: findUser.role,
+        role: findUser.role
       },
     });
   }catch(err){

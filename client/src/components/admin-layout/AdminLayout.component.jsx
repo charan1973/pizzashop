@@ -60,6 +60,15 @@ const SideBar = () => {
       >
         Item
       </Link>
+      <Link
+        as={RouterLink}
+        _hover={{ textDecoration: "none" }}
+        style={currentTab(history, "/admin/order")}
+        _focus={{ outline: "none" }}
+        to="/admin/order"
+      >
+        Order
+      </Link>
     </Flex>
   );
 };

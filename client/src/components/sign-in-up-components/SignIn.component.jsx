@@ -1,4 +1,12 @@
-import { Button, Input, Text, Box, useToast, Spinner } from "@chakra-ui/react";
+import {
+  Button,
+  Input,
+  Text,
+  Box,
+  useToast,
+  Spinner,
+  Checkbox,
+} from "@chakra-ui/react";
 import { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { loginAction } from "../../context/user/user.actions";
@@ -6,14 +14,15 @@ import { UserContext } from "../../context/user/UserContext";
 import { signIn } from "../../pages/signinandsignup/auth-helper";
 
 const SignInComponent = () => {
-    const { userDispatch } = useContext(UserContext);
-    const history = useHistory();
-    const toast = useToast()
+  const { userDispatch } = useContext(UserContext);
+  const history = useHistory();
+  const toast = useToast();
   const [cred, setCred] = useState({
     email: "",
     password: "",
   });
-  const [loadingScreen, setLoadingScreen] = useState(false)
+  const [loadingScreen, setLoadingScreen] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const { email, password } = cred;
   const handleChange = (e) => {
@@ -22,10 +31,16 @@ const SignInComponent = () => {
   };
 
   const handleSubmit = (e) => {
+    if (!(email && password))
+      toast({
+        title: "Error",
+        description: "All fields required",
+        status: "error",
+      });
+    setLoadingScreen(true);
     signIn(cred).then((response) => {
       const data = response.data;
       if (data.user) {
-          setLoadingScreen(true)
         userDispatch(loginAction(data.user));
         toast({
           title: "Sign In",
@@ -41,6 +56,7 @@ const SignInComponent = () => {
           description: data.error,
           status: "error",
         });
+        setLoadingScreen(false);
       }
     });
   };
@@ -64,14 +80,23 @@ const SignInComponent = () => {
           placeholder="Password"
           name="password"
           value={password}
-          type="password"
+          type={!showPassword ? "password" : "text"}
         />
+        <Checkbox
+          onChange={() => setShowPassword(!showPassword)}
+          checked={showPassword}
+          my="10px"
+        >
+          Show Password
+        </Checkbox>
         <Button w="100%" bg="green.400" onClick={handleSubmit}>
           SIGN IN
         </Button>
       </form>
     </Box>
-  ) : <Spinner size="xl" />
+  ) : (
+    <Spinner size="xl" />
+  );
 };
 
 export default SignInComponent;

@@ -27,7 +27,7 @@ import { addToCartAction, closeCustomizeDrawer } from "../../context/item/item.a
 
 
 import { ItemContext } from "../../context/item/ItemContext";
-import { getAllAddOn, getItem } from "../../pages/home/home-helper";
+import { getAllAddOn, getItem } from "../../pages/home/home.helper";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);

@@ -1,6 +1,6 @@
 import { Box, Button, Input, Spinner, Text, useToast } from "@chakra-ui/react";
 import { useState } from "react";
-import { addCategory } from "./category-helper";
+import { addCategory } from "./category.helper";
 
 const AddCategory = () => {
   const toast = useToast()

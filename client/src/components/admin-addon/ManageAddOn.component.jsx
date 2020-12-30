@@ -25,7 +25,7 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import DeleteAlert from "../delete-alert/DeleteAlert.component";
-import { deleteAddOnCB, getAllAddOn, updateAddOnCB } from "./addon-helper";
+import { deleteAddOnCB, getAllAddOn, updateAddOnCB } from "./addon.helper";
 
 const ManageAddOn = () => {
   const [allAddOn, setAllAddOn] = useState([]);

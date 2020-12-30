@@ -12,9 +12,9 @@ import {
   useToast
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { getAllItems } from "../../pages/home/home-helper";
+import { getAllItems } from "../../pages/home/home.helper";
 import DeleteAlert from "../delete-alert/DeleteAlert.component";
-import { deleteItemCB } from "./item-helper";
+import { deleteItemCB } from "./item.helper";
 
 
 

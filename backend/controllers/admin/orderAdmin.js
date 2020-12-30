@@ -2,7 +2,7 @@ const Order = require("../../models/Order")
 
 exports.getAllOrders = async (req, res) => {
     try{
-        const orders = await Order.find({})
+        const orders = await Order.find({}).populate("customer", "fullName email firstName lastName")
         return res.json({orders})
     }catch(err){
         return res.json({error: "Error fetching orders"})
