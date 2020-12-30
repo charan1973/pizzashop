@@ -19,12 +19,13 @@ import CartItem from "../../components/cart-item/cart-item.component";
 import AddressPreview from "../../components/address-preview/AddressPreview.component";
 import { getUserData } from "../user-profile/user.helper";
 import { placeOrder } from "./cart.helper";
+import { clearCartAction } from "../../context/item/item.actions";
 
 const CartPage = () => {
   const toast = useToast();
   const { user } = useContext(UserContext);
   const {
-    item: { cart },
+    item: { cart }, itemDispatch
   } = useContext(ItemContext);
 
   const [addressLoad, setAddressLoad] = useState({
@@ -72,13 +73,13 @@ const CartPage = () => {
       },
       (currentOrderState) => {
         placeOrder(currentOrderState).then(({ data }) => {
-          console.log(data.message);
           if (data.message) {
             toast({
               title: "Order Places",
               description: data.message,
               status: "success",
             });
+            itemDispatch(clearCartAction())
           }
         });
       }

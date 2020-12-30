@@ -5,6 +5,7 @@ import {
   ADD_TO_CART,
   DELETE_ITEM_FROM_CART,
   INCREASE_DECREASE_ITEM_QUANTITY,
+  CLEAR_CART,
 } from "./itemTypes";
 
 const itemReducer = (state, action) => {
@@ -38,6 +39,12 @@ const itemReducer = (state, action) => {
           action.quantityState
         ),
       };
+    case CLEAR_CART:
+      return {
+        ...state,
+        cart: []
+      }
+
     default:
       return state;
   }
