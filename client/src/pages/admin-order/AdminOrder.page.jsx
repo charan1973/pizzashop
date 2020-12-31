@@ -37,7 +37,6 @@ const AdminOrder = () => {
 
   return (
     <AdminLayout sectionTitle="Order">
-      {console.log(orders)}
       <Box d="flex" justifyContent="space-around">
         {orderStatus.map((btn, idx) => (
           <Button

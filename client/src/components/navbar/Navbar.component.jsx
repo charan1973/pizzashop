@@ -60,13 +60,13 @@ const Navbar = () => {
         </Heading>
         <Box
           display="flex"
-          w="20%"
+          w="30%"
           alignItems="center"
           justifyContent="space-around"
           fontWeight="bold"
         >
-          <Link to="/cart" style={{ display: displayFull }}>
-            <FontAwesome name="shopping-cart" size="2x" />{" "}
+          <Link to="/cart" style={{ display: displayFull, margin: "0 15px" }}>
+            <FontAwesome name="shopping-cart" size="2x" />
           </Link>
           <Menu>
             <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>

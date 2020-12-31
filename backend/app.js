@@ -25,6 +25,7 @@ mongoose.connect(
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
 const coreRoutes = require("./routes/core");
+const orderRoutes = require("./routes/order")
 
 // Admin routes
 const adminCategoryRoutes = require("./routes/admin/category");
@@ -36,6 +37,7 @@ const adminOrderRoutes = require("./routes/admin/orderAdmin");
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
 app.use("/api", coreRoutes);
+app.use("/api", orderRoutes)
 
 // Admin api calls
 app.use("/api/admin", adminCategoryRoutes);

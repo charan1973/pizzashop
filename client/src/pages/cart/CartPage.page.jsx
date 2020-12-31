@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useStateWithCallbackLazy } from "use-state-with-callback";
+import { Checkmark } from 'react-checkmark'
 
 import { ItemContext } from "../../context/item/ItemContext";
 import { UserContext } from "../../context/user/UserContext";
@@ -37,6 +38,8 @@ const CartPage = () => {
     addressId: "",
     orderContent: [],
   });
+
+  const [orderPlaced, setOrderPlaced] = useState(false)
 
   useEffect(() => {
     getUserData().then(({ data }) => {
@@ -80,6 +83,7 @@ const CartPage = () => {
               status: "success",
             });
             itemDispatch(clearCartAction())
+            setOrderPlaced(true)
           }
         });
       }
@@ -184,6 +188,13 @@ const CartPage = () => {
       alignItems="center"
       h="500px"
     >
+    {
+      orderPlaced && (<Box borderRadius="lg" border="1px" p="15px" m="20px">
+        <Checkmark size={96} />
+        <Text as="h2" fontSize="36px">Order placed</Text>
+        </Box>
+      )
+    }
       <Box>
         <Text as="h2" fontSize="20px" textAlign="center">
           CART IS EMPTY

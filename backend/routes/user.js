@@ -5,7 +5,6 @@ const {
   addAddress,
   editAddress,
   deleteAddress,
-  createOrder,
 } = require("../controllers/user");
 const { verifyToken } = require("../validators/tokenValidator");
 
@@ -15,8 +14,5 @@ router.get("/user/profile", verifyToken, getUserProfile);
 router.post("/user/address/add", verifyToken, addAddress);
 router.put("/user/address/edit", verifyToken, editAddress);
 router.delete("/user/address/delete/:addressId", verifyToken, deleteAddress);
-
-//Order Routes
-router.post("/user/order/create", verifyToken, createOrder);
 
 module.exports = router;
