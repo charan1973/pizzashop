@@ -2,14 +2,14 @@ const Order = require("../../models/Order")
 
 exports.getAllOrders = async (req, res) => {
     try{
-        const orders = await Order.find({}).populate("customer", "fullName email firstName lastName")
+        const orders = await Order.find({paymentStatus: true}, "-paymentDetails")
         return res.json({orders})
     }catch(err){
         return res.json({error: "Error fetching orders"})
     }
 }
 
-exports.updateOrderStatus = async ( req, res) => {
+exports.updateOrderStatus = async (req, res) => {
     const {orderId, status} = req.body
     const possibleStatus = ["completed", "delivered", "cancelled", "accepted", "pending"]
 
@@ -17,9 +17,9 @@ exports.updateOrderStatus = async ( req, res) => {
     
     try{
         const findOrder = await Order.findById(orderId)
-        findOrder.status = status
+        findOrder.orderStatus = status
         findOrder.save()
-        return res.json({message: "Order updated"})
+        return res.json({message: `Order status updated to ${status}`})
     }catch(err){
         return res.json({error: "Error updating status"})
     }
