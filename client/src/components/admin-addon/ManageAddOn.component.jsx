@@ -1,4 +1,4 @@
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon, RepeatIcon } from "@chakra-ui/icons";
 import {
   Accordion,
   AccordionButton,
@@ -6,30 +6,20 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
-  Button,
-  Checkbox,
-  FormControl,
-  FormLabel,
-  Input,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Radio,
-  RadioGroup,
-  Stack,
+  IconButton,
   Text,
   useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import DeleteAlert from "../delete-alert/DeleteAlert.component";
-import { deleteAddOnCB, getAllAddOn, updateAddOnCB } from "./addon.helper";
+import AddAddOn from "./AddOnForm.component";
+import { deleteAddOnCB, getAllAddOn } from "./addon.helper";
 
 const ManageAddOn = () => {
   const [allAddOn, setAllAddOn] = useState([]);
   const toast = useToast();
+
+  const [reload, setReload] = useState(false)
 
   const [deleteAddOn, setDeleteAddOn] = useState({
     showDeleteAlert: false,
@@ -53,10 +43,9 @@ const ManageAddOn = () => {
         setAllAddOn(data.addon);
       }
     });
-  }, [deleteAddOn, updateAddOn.showUpdateModal]);
+  }, [reload]);
 
   const { showDeleteAlert, addOnToRemove } = deleteAddOn;
-  const { addOnToUpdate } = updateAddOn;
 
   const handleDeleteClick = () => {
     deleteAddOnCB(addOnToRemove).then(({ data }) => {
@@ -67,6 +56,7 @@ const ManageAddOn = () => {
           description: data.message,
           status: "success",
         });
+        setReload(!reload)
       } else if (data.error) {
         toast({
           title: "Error",
@@ -77,48 +67,14 @@ const ManageAddOn = () => {
     });
   };
 
-  const handleUpdateChange = (e) => {
-    const { name, value } = e.target;
-    setUpdateAddOn({
-      ...updateAddOn,
-      addOnToUpdate: { ...addOnToUpdate, [name]: value },
-    });
-  };
-
-  const handleUpdateClick = () => {
-    updateAddOnCB(addOnToUpdate.addOnId, { ...addOnToUpdate }).then(
-      ({ data }) => {
-        if (data.message) {
-          toast({
-            title: "Addon Update",
-            description: data.message,
-            status: "success",
-          });
-        } else if (data.error) {
-          toast({
-            title: "Error",
-            description: data.error,
-            status: "error",
-          });
-        }
-        setUpdateAddOn({
-          showUpdateModal: false,
-          addOnToUpdate: {
-            addOnName: "",
-            addOnPrice: "",
-            addOnType: "",
-            addOnAvailable: "",
-          },
-        });
-      }
-    );
-  };
-
   return (
     <Box>
-      <Text as="h6" textAlign="center" fontWeight="bold" fontSize="25px">
+      <Box d="flex" justifyContent="center" mb="10px">
+      <Text as="h6" fontWeight="bold" fontSize="25px">
         All AddOn
       </Text>
+      <IconButton ml="10px" icon={<RepeatIcon />} onClick={() => setReload(!false)}/>
+      </Box>
       <Accordion allowToggle>
         {allAddOn.map((addon) => {
           return (
@@ -131,11 +87,11 @@ const ManageAddOn = () => {
                   <AccordionIcon />
                   <span>{addon.addOnName}</span>
                 </div>
-                <Box d="flex"> 
+                <Box d="flex">
                   <Box
                     mx="10px"
                     bg="red.600"
-                    borderRadius="5px" 
+                    borderRadius="5px"
                     p="6px"
                     onClick={() =>
                       setDeleteAddOn({
@@ -185,87 +141,23 @@ const ManageAddOn = () => {
       </Accordion>
 
       <DeleteAlert
+        name="AddOn"
         showAlert={showDeleteAlert}
         handleCancelClick={() =>
           setDeleteAddOn({ ...deleteAddOn, showDeleteAlert: false })
         }
         handleDeleteClick={handleDeleteClick}
       />
-
-      {/* Update Modal */}
-      <Modal isOpen={updateAddOn.showUpdateModal}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Update AddOn</ModalHeader>
-          <ModalBody pb={6}>
-            <FormControl>
-              <FormLabel>AddOn Name</FormLabel>
-              <Input
-                placeholder="AddOn Name"
-                name="addOnName"
-                type="text"
-                value={addOnToUpdate.addOnName}
-                onChange={handleUpdateChange}
-              />
-              <FormLabel>AddOn Price</FormLabel>
-              <Input
-                placeholder="AddOn Price"
-                name="addOnPrice"
-                type="number"
-                value={addOnToUpdate.addOnPrice}
-                onChange={handleUpdateChange}
-              />
-              <RadioGroup mb="10px">
-                <Stack direction="row">
-                  <Radio
-                    name="addOnType"
-                    value="topping"
-                    onChange={handleUpdateChange}
-                    isChecked={addOnToUpdate.addOnType === "topping"}
-                  >
-                    Topping
-                  </Radio>
-                  <Radio
-                    name="addOnType"
-                    value="addon"
-                    onChange={handleUpdateChange}
-                    isChecked={addOnToUpdate.addOnType === "addon"}
-                  >
-                    AddOn
-                  </Radio>
-                </Stack>
-              </RadioGroup>
-              <Checkbox
-                mb="10px"
-                onChange={(e) =>
-                  setUpdateAddOn({
-                    ...updateAddOn,
-                    addOnToUpdate: {
-                      ...addOnToUpdate,
-                      addOnAvailable: e.target.checked,
-                    },
-                  })
-                }
-                isChecked={addOnToUpdate.addOnAvailable}
-              >
-                AddOn Available
-              </Checkbox>
-            </FormControl>
-          </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={handleUpdateClick}>
-              Save
-            </Button>
-            <Button
-              onClick={() =>
-                setUpdateAddOn({ ...updateAddOn, showUpdateModal: false })
-              }
-            >
-              Cancel
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      {updateAddOn.showUpdateModal && (
+        <AddAddOn
+          formType="update"
+          isOpen={updateAddOn.showUpdateModal}
+          onClose={() =>
+            setUpdateAddOn({ ...updateAddOn, showUpdateModal: false })
+          }
+          {...updateAddOn.addOnToUpdate}
+        />
+      )}
     </Box>
   );
 };

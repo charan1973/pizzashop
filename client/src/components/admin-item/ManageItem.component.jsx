@@ -101,7 +101,7 @@ const ManageItem = () => {
         );
       })}
     </Accordion>
-    <DeleteAlert showAlert={showDeleteAlert} handleCancelClick={() => setDeleteItem({deleteItemId: "", showDeleteAlert: false})} handleDeleteClick={handleDeleteItem} />
+    <DeleteAlert name="Item" showAlert={showDeleteAlert} handleCancelClick={() => setDeleteItem({deleteItemId: "", showDeleteAlert: false})} handleDeleteClick={handleDeleteItem} />
     </Box>
   );
 };

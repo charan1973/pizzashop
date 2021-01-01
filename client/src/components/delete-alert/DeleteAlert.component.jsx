@@ -1,6 +1,6 @@
 import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button } from "@chakra-ui/react";
 
-const DeleteAlert = ({showAlert, handleCancelClick, handleDeleteClick}) => {
+const DeleteAlert = ({name, showAlert, handleCancelClick, handleDeleteClick}) => {
   
   return ( 
         <AlertDialog 
@@ -9,7 +9,7 @@ const DeleteAlert = ({showAlert, handleCancelClick, handleDeleteClick}) => {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Delete AddOn
+              Delete {name}
             </AlertDialogHeader>
 
             <AlertDialogBody>

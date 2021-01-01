@@ -1,29 +1,26 @@
-import { Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import { useState } from "react";
-import AddAddOn from "../../components/admin-addon/AddAddOn.component";
+import AddAddOn from "../../components/admin-addon/AddOnForm.component";
 import ManageAddOn from "../../components/admin-addon/ManageAddOn.component";
 import AdminLayout from "../../components/admin-layout/AdminLayout.component";
 
 const AdminAddOn = () => {
-
-    const [view, setView] = useState(true)
+  const [view, setView] = useState(false);
   return (
     <AdminLayout sectionTitle="AddOn">
-      <Flex flexDirection="row" justifyContent="space-around">
-        <Button
-          bg={`${!view ? "pink.300" : "gray.700"}`}
-          onClick={() => setView(false)}
-        >
-          Add
-        </Button>
-        <Button
-          bg={`${view ? "pink.300" : "gray.700"}`}
-          onClick={() => setView(true)}
-        >
-          Manage
-        </Button>
-      </Flex>
-      {!view ? <AddAddOn /> : <ManageAddOn />}
+    <Box w="100%" textAlign="center" mb="20px">
+        <Button w="20%" bg="red.400" onClick={() => setView(true)}>Create AddOn</Button>
+    </Box>
+      <ManageAddOn />
+      {
+        view &&(
+      <AddAddOn
+        formType="create"
+        isOpen={view}
+        onClose={() => setView(false)}
+      />
+        )
+      }
     </AdminLayout>
   );
 };
