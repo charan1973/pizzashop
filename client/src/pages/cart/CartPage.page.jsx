@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useStateWithCallbackLazy } from "use-state-with-callback";
-import { Checkmark } from 'react-checkmark'
+import { Checkmark } from "react-checkmark";
 
 import { ItemContext } from "../../context/item/ItemContext";
 import { UserContext } from "../../context/user/UserContext";
@@ -19,14 +19,16 @@ import { UserContext } from "../../context/user/UserContext";
 import CartItem from "../../components/cart-item/cart-item.component";
 import AddressPreview from "../../components/address-preview/AddressPreview.component";
 import { getUserData } from "../user-profile/user.helper";
-import { placeOrder } from "./cart.helper";
+import StripeCheckout from "react-stripe-checkout";
+import { placeOrder, calculateTotal } from "./cart.helper";
 import { clearCartAction } from "../../context/item/item.actions";
 
 const CartPage = () => {
   const toast = useToast();
   const { user } = useContext(UserContext);
   const {
-    item: { cart }, itemDispatch
+    item: { cart },
+    itemDispatch,
   } = useContext(ItemContext);
 
   const [addressLoad, setAddressLoad] = useState({
@@ -36,10 +38,10 @@ const CartPage = () => {
 
   const [order, setOrder] = useStateWithCallbackLazy({
     addressId: "",
-    orderContent: [],
+    orderContent: [...cart],
   });
 
-  const [orderPlaced, setOrderPlaced] = useState(false)
+  const [orderPlaced, setOrderPlaced] = useState(false);
 
   useEffect(() => {
     getUserData().then(({ data }) => {
@@ -49,45 +51,27 @@ const CartPage = () => {
     });
   }, []);
 
-  const calculateTotal = () => {
-    return cart.reduce(
-      (a, item) =>
-        a +
-        (item.itemPrice +
-          item.addOn.reduce((b, addOn) => b + addOn.addOnPrice, 0)) *
-          item.quantity,
-      0
-    );
-  };
-
-  const handlePlaceOrder = () => {
-    // Show error message if address is not selected
-    if (!order.addressId)
-      return toast({
-        title: "Error",
-        description: "Please select address",
-        status: "error",
-      });
-    // send order
-    setOrder(
-      {
-        ...order,
-        orderContent: [...cart],
-      },
-      (currentOrderState) => {
-        placeOrder(currentOrderState).then(({ data }) => {
-          if (data.message) {
-            toast({
-              title: "Order Places",
-              description: data.message,
-              status: "success",
-            });
-            itemDispatch(clearCartAction())
-            setOrderPlaced(true)
-          }
-        });
-      }
-    );
+  const handlePlaceOrder = (token) => {
+    if(token.id){
+      placeOrder(order, token)
+      .then(({data}) => {
+        if(data.message){
+          toast({
+            title: "Order Placed",
+            description: data.message,
+            status: "success"
+          })
+          itemDispatch(clearCartAction())
+          setOrderPlaced(true)
+        }else if(data.error){
+          toast({
+            title: "Error",
+            description: data.error,
+            status: "error"
+          })
+        }
+      })      
+    }
   };
 
   return cart.length > 0 ? (
@@ -172,11 +156,22 @@ const CartPage = () => {
       >
         <Box d="flex" alignItems="center" justifyContent="flex-end">
           <Text as="h5" fontSize="25px" mr="10px">
-            Total: ₹{calculateTotal()}
+            Total: ₹{calculateTotal(cart)}
           </Text>
-          <Button bg="green.400" onClick={handlePlaceOrder}>
-            PLACE ORDER
-          </Button>
+          {order.addressId && (
+            <StripeCheckout
+              stripeKey={process.env.REACT_APP_STRIPE_KEY}
+              token={handlePlaceOrder}
+              name="Order Pizza"
+              email={user.email}
+              currency="INR"
+              amount={calculateTotal(cart) * 100}
+            >
+              <Button bg="green.400" onClick={handlePlaceOrder}>
+                PLACE ORDER
+              </Button>
+            </StripeCheckout>
+          )}
         </Box>
       </Box>
     </Grid>
@@ -188,13 +183,14 @@ const CartPage = () => {
       alignItems="center"
       h="500px"
     >
-    {
-      orderPlaced && (<Box borderRadius="lg" border="1px" p="15px" m="20px">
-        <Checkmark size={96} />
-        <Text as="h2" fontSize="36px">Order placed</Text>
+      {orderPlaced && (
+        <Box borderRadius="lg" border="1px" p="15px" m="20px">
+          <Checkmark size={96} />
+          <Text as="h2" fontSize="36px">
+            Order placed
+          </Text>
         </Box>
-      )
-    }
+      )}
       <Box>
         <Text as="h2" fontSize="20px" textAlign="center">
           CART IS EMPTY

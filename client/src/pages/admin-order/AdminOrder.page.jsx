@@ -15,7 +15,9 @@ import { useEffect, useState } from "react";
 import moment from "moment";
 
 import AdminLayout from "../../components/admin-layout/AdminLayout.component";
+import CartItem from "../../components/cart-item/cart-item.component"
 import { getAllOrders } from "./admin-order.helper";
+import {calculateTotal} from "../cart/cart.helper"
 
 const AdminOrder = () => {
   const orderStatus = [
@@ -27,13 +29,20 @@ const AdminOrder = () => {
   ];
   const [orderStatusType, setOrderStatusType] = useState("pending");
   const [orders, setOrders] = useState([]);
-  const [openModal, setOpenModal] = useState(false)
+  const [orderEdit, setOrderEdit] = useState({
+    openModal: false
+  })
 
   useEffect(() => {
     getAllOrders().then(({ data }) => {
       setOrders(data.orders);
     });
   }, []);
+
+  const openOrder = (order) => {
+    console.log(order);
+    setOrderEdit({...order, openModal: true})
+  }
 
   return (
     <AdminLayout sectionTitle="Order">
@@ -53,7 +62,7 @@ const AdminOrder = () => {
           .filter((orders) => orders.orderStatus === orderStatusType)
           .map((order) => (
             <Box
-              onClick={() => setOpenModal(true)}
+              onClick={() => openOrder(order)}
               key={order._id}
               w="200px"
               borderWidth="1px"
@@ -70,23 +79,33 @@ const AdminOrder = () => {
             </Box>
           ))}
       </SimpleGrid>
+      {
+        orderEdit.openModal && (
       <Modal 
-      isOpen={openModal} onClose={() => setOpenModal(false)}
+      isOpen={orderEdit.openModal} onClose={() => setOrderEdit({...orderEdit, openModal: false})}
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
+          <ModalHeader>Order View</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>Something</ModalBody>
-
+          <ModalBody>
+            {
+              orderEdit.orderContent.map(item => {
+                return <CartItem item={item} admin />
+              })
+            }
+            <Text as="p" fontSize="15px" textAlign="right">Total: {calculateTotal(orderEdit.orderContent)}</Text>
+          </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" mr={3}>
+            <Button colorScheme="blue" mr={3} onClick={() => setOrderEdit({...orderEdit, openModal: false})}>
               Close
             </Button>
-            <Button variant="ghost">Secondary Action</Button>
+            <Button variant="ghost">Save</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
+        )
+      }
     </AdminLayout>
   );
 };

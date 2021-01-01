@@ -36,7 +36,7 @@ const UserProfile = () => {
     area: "",
     city: "",
     zipcode: "",
-    phoneNumber: null,
+    phoneNumber: "",
     openModal: false,
     addressId: "",
     type: "",
@@ -65,7 +65,6 @@ const UserProfile = () => {
     });
   }, [reload]);
 
-  useEffect(() => console.log(addressModal), [addressModal]);
 
   const { firstName, lastName, email, fullName, address, loaded } = userData;
 
@@ -132,9 +131,9 @@ const UserProfile = () => {
                   <PopoverContent py={3} h="170px" w="400px" overflow="scroll">
                     <PopoverBody>
                       {address.map(({ address, _id }) => (
-                        <Box>
+                        <Box key={_id}>
                           <Flex justifyContent="space-between">
-                            <Box key={_id}>
+                            <Box>
                               <AddressPreview address={address} />
                             </Box>
                             <Flex>

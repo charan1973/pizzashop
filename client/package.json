@@ -20,6 +20,7 @@
     "react-images-upload": "^1.2.8",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
+    "react-stripe-checkout": "^2.6.3",
     "use-state-with-callback": "^2.0.3",
     "uuid": "^8.3.2",
     "web-vitals": "^0.2.4"
