@@ -20,8 +20,3 @@ export const deleteAddOnCB = (addOnId) => {
     return axios.delete(`${API}/admin/addon/delete/${addOnId}`)
             .catch(err => console.log(err))
 }
-
-export const updateAddOnCB = (addOnId, addOnContent) => {
-    return axios.put(`${API}/admin/addon/update/${addOnId}`, {...addOnContent})
-            .catch(err => console.log(err))
-}

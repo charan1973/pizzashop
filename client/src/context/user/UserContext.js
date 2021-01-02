@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useReducer } from 'react';
-import { getUserRoleAction } from './user.actions';
+import { getUserRoleAction, logoutAction } from './user.actions';
 import { getUserRole } from './user.utils';
 import userReducer from './userReducer';
 
@@ -21,6 +21,8 @@ const UserContextProvider = ({children}) => {
             .then(({data}) => {
                 userDispatch(getUserRoleAction(data.role))
             })
+        }else if(user.role === undefined){
+            userDispatch(logoutAction())
         }
     }, [user.role])
 
