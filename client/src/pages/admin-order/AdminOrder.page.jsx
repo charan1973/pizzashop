@@ -24,7 +24,6 @@ import moment from "moment";
 import AdminLayout from "../../components/admin-layout/AdminLayout.component";
 import CartItem from "../../components/cart-item/cart-item.component";
 import { getAllOrders, updateOrderStatus } from "./admin-order.helper";
-import { calculateTotal } from "../cart/cart.helper";
 
 const AdminOrder = () => {
   const toast = useToast()
@@ -119,7 +118,7 @@ const AdminOrder = () => {
                 }
               >
                 {orderStatus.map((status) => (
-                  <option value={status}>{status}</option>
+                  <option key={status} value={status}>{status}</option>
                 ))}
               </Select>
               <Text as="p" fontSize="15px" m="15px" textAlign="right">
@@ -130,7 +129,7 @@ const AdminOrder = () => {
                   <AccordionButton>Show Order Content<AccordionIcon /></AccordionButton>
                   <AccordionPanel pb={4}>
                     {orderEdit.orderContent.map((item) => {
-                      return <CartItem item={item} admin />;
+                      return <CartItem key={item._id} item={item} admin />;
                     })}
                   </AccordionPanel>
                 </AccordionItem>

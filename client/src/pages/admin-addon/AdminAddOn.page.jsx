@@ -1,4 +1,4 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { useState } from "react";
 import AddAddOn from "../../components/admin-addon/AddOnForm.component";
 import ManageAddOn from "../../components/admin-addon/ManageAddOn.component";
