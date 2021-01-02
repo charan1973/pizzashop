@@ -3,6 +3,7 @@ const Order = require("../models/Order");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const { v4: uuid } = require("uuid");
 const { getRounds } = require("bcryptjs");
+const { use } = require("../routes/order");
 
 // Order controllers
 exports.createOrder = async (req, res) => {
@@ -74,7 +75,6 @@ exports.createOrder = async (req, res) => {
       { idempotencyKey }
     );
 
-
     getOrder.paymentDetails = {
       id: charge.id,
       object: charge.object,
@@ -87,13 +87,27 @@ exports.createOrder = async (req, res) => {
     getOrder.paymentStatus = true;
     await getOrder.save();
 
-    return res.json({message: "Order placed successfully!"})
-
+    return res.json({ message: "Order placed successfully!" });
   } catch (err) {
     console.log(err);
-    if(err.type === "StripeCardError"){
+    if (err.type === "StripeCardError") {
       return res.json({ error: err.raw.code });
     }
-    res.json({error: "Error placing order"})
+    res.json({ error: "Error placing order" });
+  }
+};
+
+exports.getUserOrders = async (req, res) => {
+  const page = req.query.page * 5;
+  try {
+    const userOrders = await Order.find(
+      { customer: req.user.id },
+      "-paymentDetails -orderContent"
+    )
+      .limit(page)
+      .sort("-createdAt");
+    return res.json({ order: userOrders });
+  } catch (err) {
+    return res.json({ error: "Error fetching orders" });
   }
 };

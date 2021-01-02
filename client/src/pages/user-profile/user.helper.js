@@ -6,6 +6,11 @@ export const getUserData = (userId) => {
             .catch(err => console.log(err))
 }
 
+export const getUserOrders = (page) => {
+    return axios.get(`${API}/user/order/all/?page=${page}`)
+            .catch(err => console.log(err)) 
+}
+
 export const addressWrite = (address) => {
     // const {buildingNumber, streetName, area, city, zipcode, phoneNumber} = address
     if(address.type === "Create"){
