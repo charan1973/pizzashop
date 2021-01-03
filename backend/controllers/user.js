@@ -77,7 +77,7 @@ exports.deleteAddress = async (req, res) => {
     const savedUser = await findUser.save();
     return res.json({ message: "Address deleted" });
   } catch (err) {
-    console.log(err);
+    return res.json({error: "Error deleting address"})
   }
 };
 

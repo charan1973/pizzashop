@@ -1,31 +1,24 @@
 import { Button, Flex } from "@chakra-ui/react";
 import { useState } from "react";
-import AddItem from "../../components/admin-item/AddItem.component";
+import ItemForm from "../../components/admin-item/ItemForm.component";
 import ManageItem from "../../components/admin-item/ManageItem.component";
 import AdminLayout from "../../components/admin-layout/AdminLayout.component";
 
 const AdminItem = () => {
 
-    const [view, setView] = useState(true)
+    const [view, setView] = useState(false)
 
   return (
     <AdminLayout sectionTitle="Item">
       <Flex flexDirection="row" justifyContent="space-around">
         <Button
-          bg={`${!view ? "pink.300" : "gray.700"}`}
-          onClick={() => setView(false)}
-        >
-          Add
-        </Button>
-        <Button
-          bg={`${view ? "pink.300" : "gray.700"}`}
           onClick={() => setView(true)}
         >
-          Manage
+          Add Item
         </Button>
       </Flex>
-      {!view && <AddItem />}
-      {view && <ManageItem />}
+      {view && <ItemForm isOpen={view} onClose={() => setView(false)} />}
+      <ManageItem />
     </AdminLayout>
   );
 };

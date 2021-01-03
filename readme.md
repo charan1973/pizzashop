@@ -62,6 +62,6 @@ A friendly food ordering website for your neighborhood pizza store.
 ![Admin Order](./screenshots/Selection_112.png)
 
 ### TODOs
-- [ ] Make admin to edit the item info
+- [x] Make admin to edit the item info
 - [ ] Show user all of their orders in order page along with status
 - [ ] Finish UP

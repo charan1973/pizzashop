@@ -89,7 +89,6 @@ exports.createOrder = async (req, res) => {
 
     return res.json({ message: "Order placed successfully!" });
   } catch (err) {
-    console.log(err);
     if (err.type === "StripeCardError") {
       return res.json({ error: err.raw.code });
     }

@@ -17,7 +17,7 @@ exports.createItem = async (req, res) => {
     };
   }
 
-  if (!itemName || Object.keys(size).length === 0 || !itemCategory)
+  if (!itemName || Object.keys(JSON.parse(size)).length === 0 || !itemCategory)
     return res.json({ error: "All the fields are required" });
 
   const newItem = new Item({
@@ -39,6 +39,11 @@ exports.updateItem = async (req, res) => {
 
   const findItem = await Item.findById(itemId);
   if (!findItem) return res.json({ error: "No items found on the list" });
+
+  // Delete Image property so that it doesn't affect the existing image
+  if(req.body.image){
+    delete req.body.image
+  }
 
   if (req.body.size) {
     findItem.size = {
