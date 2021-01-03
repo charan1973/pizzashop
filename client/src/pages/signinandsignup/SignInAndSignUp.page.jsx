@@ -8,12 +8,14 @@ import {
 import { withRouter } from "react-router-dom";
 import SignInComponent from "../../components/sign-in-up-components/SignIn.component";
 import SignUpComponent from "../../components/sign-in-up-components/SignUp.component";
+import Head from "../../components/head/Head.component";
 
 const SignInAndSignUp = ({ history }) => {
   const [switchView, setSwitchView] = useState(true);
 
   return (
     <Box w="100%" h="90vh" d="flex" justifyContent="center" alignItems="center" >
+    <Head title="Sign In" />
       <Flex flexDirection="column" justifyContent="center" alignItems="center">
         <Box w="70vh" border="1px solid" borderRadius="10px">
           <Flex>

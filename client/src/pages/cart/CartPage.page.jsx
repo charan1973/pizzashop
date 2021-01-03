@@ -22,6 +22,7 @@ import { getUserData } from "../user-profile/user.helper";
 import StripeCheckout from "react-stripe-checkout";
 import { placeOrder, calculateTotal } from "./cart.helper";
 import { clearCartAction } from "../../context/item/item.actions";
+import Head from "../../components/head/Head.component";
 
 const CartPage = () => {
   const toast = useToast();
@@ -76,6 +77,7 @@ const CartPage = () => {
 
   return cart.length > 0 ? (
     <Grid templateColumns="75% 25%" gap={5} mb="60px">
+    <Head title="Cart" />
       <Box>
         <Button as={Link} to="/" mb="10px">
           <ChevronLeftIcon />

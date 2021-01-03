@@ -11,6 +11,7 @@ import {
 import { useContext, useEffect, useState } from "react";
 import { useStateWithCallbackLazy } from "use-state-with-callback";
 import { getAllCategory } from "../../components/admin-category/category.helper";
+import Head from "../../components/head/Head.component";
 import ItemDirectory from "../../components/item-directory/ItemDirectory.component";
 import ItemDrawer from "../../components/item-drawer/ItemDrawer.component";
 import { ItemContext } from "../../context/item/ItemContext";
@@ -63,6 +64,7 @@ const Home = () => {
 
   return (
     <Box>
+      <Head title="Home" />
       <Flex w="50%" mx="auto">
         <Input placeholder="Search Items..." name="searchInput" value={searchInput} onChange={handleSearchChange} />
         <Button>

@@ -48,7 +48,10 @@ const Navbar = () => {
       >
         <Heading as="h3" size="md" fontWeight="bold">
           <Box d="flex">
-            <Box d="flex" alignItems="center" as={Link} to="/"><Image src={Logo} h="50px" />Pizzetta</Box>
+            <Box d="flex" alignItems="center" as={Link} to="/">
+              <Image src={Logo} h="50px" />
+              Pizzetta
+            </Box>
             <Button
               mx="10px"
               _focus={{ outline: "none" }}
@@ -78,7 +81,9 @@ const Navbar = () => {
               </MenuItem>
               {user && (
                 <>
-                  <MenuItem as={Link} to="/user/profile">PROFILE</MenuItem>
+                  <MenuItem as={Link} to="/user/profile">
+                    PROFILE
+                  </MenuItem>
                   <MenuItem
                     style={{ cursor: "pointer" }}
                     onClick={handleLogout}

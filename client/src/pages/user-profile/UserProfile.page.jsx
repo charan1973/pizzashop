@@ -19,6 +19,7 @@ import {
 import moment from "moment";
 import { useEffect, useState } from "react";
 import AddressPreview from "../../components/address-preview/AddressPreview.component";
+import Head from "../../components/head/Head.component";
 import UserAddress from "../../components/user-address/UserAddress.component";
 import {
   addressWrite,
@@ -113,6 +114,7 @@ const UserProfile = () => {
   return (
     loaded && (
       <Container>
+      <Head title={fullName} />
         <Text as="h2" fontSize="30px">
           Profile: {fullName}
         </Text>

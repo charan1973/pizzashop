@@ -1,5 +1,6 @@
 import { Box, Flex, Grid, Link, Text } from "@chakra-ui/react";
 import { Link as RouterLink, useHistory } from "react-router-dom";
+import Head from "../head/Head.component";
 
 const SideBar = () => {
   const history = useHistory();
@@ -76,6 +77,7 @@ const SideBar = () => {
 const AdminLayout = ({ children, sectionTitle }) => {
   return (
     <Box>
+    <Head title={`Admin ${sectionTitle.replace("Admin", "")}`} />
       <Text
         as="h1"
         textAlign="center"

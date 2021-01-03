@@ -28,6 +28,7 @@ import { addToCartAction, closeCustomizeDrawer } from "../../context/item/item.a
 
 import { ItemContext } from "../../context/item/ItemContext";
 import { getAllAddOn, getItem } from "../../pages/home/home.helper";
+import Head from "../head/Head.component";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -139,6 +140,8 @@ const ItemDrawer = () => {
 
   return (
     isLoaded && (
+      <>
+      <Head title={`Customise ${itemData.itemName}`} />
       <Drawer
         placement="left"
         onClose={() => itemDispatch(closeCustomizeDrawer())}
@@ -257,6 +260,7 @@ const ItemDrawer = () => {
           </DrawerContent>
         </DrawerOverlay>
       </Drawer>
+      </>
     )
   );
 };
