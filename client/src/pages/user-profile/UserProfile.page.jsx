@@ -74,7 +74,7 @@ const UserProfile = () => {
   useEffect(() => {
     getUserOrders(orders.page).then(({ data }) =>
       setOrders({ ...orders, order: data.order })
-    );
+    ); // eslint-disable-next-line
   }, [orders.page]);
 
   const { firstName, lastName, email, fullName, address, loaded } = userData;
@@ -113,7 +113,7 @@ const UserProfile = () => {
 
   return (
     loaded && (
-      <Container>
+      <Container maxW="500px" d="flex" flexDirection="column" alignItems="center" mb="20px">
       <Head title={fullName} />
         <Text as="h2" fontSize="30px">
           Profile: {fullName}

@@ -12,8 +12,8 @@ import CartPage from "./pages/cart/CartPage.page";
 import Home from "./pages/home/Home.page";
 import SignInAndSignUp from "./pages/signinandsignup/SignInAndSignUp.page";
 import UserProfile from "./pages/user-profile/UserProfile.page";
-import {ReactComponent as Error} from "./assets/404.svg"
 import AdminOrder from "./pages/admin-order/AdminOrder.page";
+import ErrorPage from "./pages/error/Error.page";
 
 function App({ match }) {
   
@@ -32,7 +32,7 @@ function App({ match }) {
         <AdminRoute exact path="/admin/addon" component={AdminAddOn} />
         <AdminRoute exact path="/admin/item" component={AdminItem} />
         <AdminRoute exact path="/admin/order" component={AdminOrder} />
-        <Route component={Error} />
+        <Route component={ErrorPage} />
       </Switch>
     </Container>
   );

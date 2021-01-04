@@ -8,14 +8,12 @@ import {
   Checkbox,
 } from "@chakra-ui/react";
 import { useContext, useState } from "react";
-import { useHistory } from "react-router-dom";
 import { loginAction } from "../../context/user/user.actions";
 import { UserContext } from "../../context/user/UserContext";
 import { signIn } from "../../pages/signinandsignup/auth-helper";
 
 const SignInComponent = () => {
   const { userDispatch } = useContext(UserContext);
-  const history = useHistory();
   const toast = useToast();
   const [cred, setCred] = useState({
     email: "",
@@ -47,9 +45,6 @@ const SignInComponent = () => {
           description: "You've signed in successfully",
           status: "success",
         });
-        setTimeout(() => {
-          history.push("/");
-        }, 3000);
       } else if (data.error) {
         toast({
           title: "Error",

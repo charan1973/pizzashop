@@ -1,4 +1,4 @@
-import { AddIcon, DeleteIcon, MinusIcon } from "@chakra-ui/icons";
+import { AddIcon, CloseIcon, DeleteIcon, MinusIcon } from "@chakra-ui/icons";
 import {
   Box,
   Divider,
@@ -53,8 +53,8 @@ const CartItem = ({ item, admin }) => {
         </Flex>
       </Flex>
       <Divider />
-      <Flex p="10px" justifyContent="space-between">
-        <Box>
+      <Flex p="10px" justifyContent="space-between" alignItems="center">
+        <Box mr="13px">
           <Text as="p" fontSize="15px" fontWeight="bold">
             Add On
           </Text>
@@ -84,7 +84,7 @@ const CartItem = ({ item, admin }) => {
             />
           )}
           <Text as="span" m="5px">
-            {item.quantity}&#9932;{eachItemPrice(item)}
+            {item.quantity}<CloseIcon h="9px" />{eachItemPrice(item)}
           </Text>
           {!admin && (
             <IconButton

@@ -8,17 +8,19 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  Text,
   useBreakpointValue,
   useColorMode,
   useToast,
 } from "@chakra-ui/react";
 import { useContext } from "react";
-import FontAwesome from "react-fontawesome";
 import { Link } from "react-router-dom";
 import Logo from "../../assets/logo.png";
 import { logoutAction } from "../../context/user/user.actions";
 import { UserContext } from "../../context/user/UserContext";
 import { signOut } from "../../pages/signinandsignup/auth-helper";
+import CartIcon from "../../assets/shopping-cart.svg"
+import { ItemContext } from "../../context/item/ItemContext";
 
 const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode("dark");
@@ -27,6 +29,7 @@ const Navbar = () => {
   const displaySmall = useBreakpointValue({ base: "", md: "none" });
 
   const { user, userDispatch } = useContext(UserContext);
+  const {item} = useContext(ItemContext)
   const handleLogout = () => {
     userDispatch(logoutAction());
     signOut();
@@ -38,6 +41,9 @@ const Navbar = () => {
     });
   };
 
+  // Show cart items length
+  const cartLength = item.cart.length > 0 && item.cart.length
+
   return (
     <nav>
       <Box
@@ -47,7 +53,7 @@ const Navbar = () => {
         py="20px"
       >
         <Heading as="h3" size="md" fontWeight="bold">
-          <Box d="flex">
+          <Box d="flex" alignItems="center">
             <Box d="flex" alignItems="center" as={Link} to="/">
               <Image src={Logo} h="50px" />
               Pizzetta
@@ -63,21 +69,22 @@ const Navbar = () => {
         </Heading>
         <Box
           display="flex"
-          w="30%"
+          w={["50%", "40%", "25%"]}
           alignItems="center"
           justifyContent="space-around"
           fontWeight="bold"
         >
-          <Link to="/cart" style={{ display: displayFull, margin: "0 15px" }}>
-            <FontAwesome name="shopping-cart" size="2x" />
-          </Link>
+          <Button as={Link} to="/cart" style={{ display: displayFull, margin: "0 15px" }} bg="#fff">
+            <Image src={CartIcon} h="25px" />
+            <p style={{color: "#000"}}>{cartLength && "(" + cartLength +")"}</p>
+          </Button>
           <Menu>
-            <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-              Options
+            <MenuButton as={Button} fontSize="15px" rightIcon={<ChevronDownIcon />}>
+              Options<Text as="span" style={{ display: displaySmall }}>{cartLength && "(" + cartLength +")"}</Text>
             </MenuButton>
             <MenuList p="7px">
               <MenuItem as={Link} to="/cart" style={{ display: displaySmall }}>
-                CART
+                CART{cartLength && "(" + cartLength +")"}
               </MenuItem>
               {user && (
                 <>

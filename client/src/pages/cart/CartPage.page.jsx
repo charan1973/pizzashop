@@ -53,36 +53,42 @@ const CartPage = () => {
   }, []);
 
   const handlePlaceOrder = (token) => {
-    if(token.id){
-      placeOrder(order, token)
-      .then(({data}) => {
-        if(data.message){
+    if (token.id) {
+      placeOrder(order, token).then(({ data }) => {
+        if (data.message) {
           toast({
             title: "Order Placed",
             description: data.message,
-            status: "success"
-          })
-          itemDispatch(clearCartAction())
-          setOrderPlaced(true)
-        }else if(data.error){
+            status: "success",
+          });
+          itemDispatch(clearCartAction());
+          setOrderPlaced(true);
+        } else if (data.error) {
           toast({
             title: "Error",
             description: data.error,
-            status: "error"
-          })
+            status: "error",
+          });
         }
-      })      
+      });
     }
   };
 
   return cart.length > 0 ? (
-    <Grid templateColumns="75% 25%" gap={5} mb="60px">
-    <Head title="Cart" />
+    <Grid
+      templateColumns={{ lg: "75% 25%" }}
+      gap={5}
+      mb="60px"
+      justifyContent={{ base: "center" }}
+    >
+      <Head title="Cart" />
       <Box>
-        <Button as={Link} to="/" mb="10px">
-          <ChevronLeftIcon />
-          GO BACK HOME
-        </Button>
+        <Flex>
+          <Button as={Link} to="/" mb="10px">
+            <ChevronLeftIcon />
+            GO BACK HOME
+          </Button>
+        </Flex>
         <Box id="cart-list">
           {cart.map((item) => (
             <CartItem key={item.id} item={item} />
@@ -95,8 +101,9 @@ const CartPage = () => {
         mb="4px"
         boxShadow="md"
         h="320px"
-        w="310px"
+        w="100%"
         overflow="hidden"
+        id="address"
       >
         <Button
           as={Link}
@@ -118,7 +125,7 @@ const CartPage = () => {
           <Divider />
         </Box>
         <Box overflow="scroll" h="64%">
-          {addressLoad.loaded && user ? (
+          {addressLoad.loaded && user && addressLoad.address.length > 0 ? (
             addressLoad.address.map(({ address, _id }) => (
               <Box
                 key={_id}
@@ -139,7 +146,8 @@ const CartPage = () => {
             ))
           ) : (
             <Box d="flex" h="100%" justifyContent="center" alignItems="center">
-              <p>Sign In to select an address</p>
+              {!user && <p>Sign In to select an address</p>}
+              {!addressLoad.address.length  && user && <p>Please add an address</p>}
             </Box>
           )}
         </Box>
@@ -155,12 +163,13 @@ const CartPage = () => {
         d="flex"
         alignItems="center"
         justifyContent="flex-end"
+        bg={{base: "gray.700", md: "none", lg: "none"}}
       >
         <Box d="flex" alignItems="center" justifyContent="flex-end">
           <Text as="h5" fontSize="25px" mr="10px">
             Total: ₹{calculateTotal(cart)}
           </Text>
-          {order.addressId && (
+          {order.addressId ? (
             <StripeCheckout
               stripeKey={process.env.REACT_APP_STRIPE_KEY}
               token={handlePlaceOrder}
@@ -173,6 +182,19 @@ const CartPage = () => {
                 PLACE ORDER
               </Button>
             </StripeCheckout>
+          ) : (
+            <Button
+            as="a"
+              onClick={() =>
+                toast({
+                  title: "Select Address",
+                  duration: 1000,
+                })
+              }
+              href="#address"
+            >
+              Place Order
+            </Button>
           )}
         </Box>
       </Box>
