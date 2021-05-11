@@ -134,7 +134,7 @@ const ManageItem = () => {
                   color="gray.400"
                   p="10px"
                 >
-                  <Image h="190px" src={item.image.url} alt="pizza" />
+                  <Image h="190px" src={item.image.secure_url} alt="pizza" />
                   <Box>
                     <p>
                       Item Category: <b>{item.itemCategory.categoryName}</b>

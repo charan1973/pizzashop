@@ -14,7 +14,7 @@ const ItemCard = ({item, customizeOnClick}) => {
               <Image
                 height="250px"
                 width="100%"
-                src={item.image.url}
+                src={item.image.secure_url}
                 alt="alt"
               />
               <Box p="6">
